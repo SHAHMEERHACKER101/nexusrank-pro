@@ -1,9 +1,9 @@
 /**
  * NexusRank Pro - Cloudflare Worker Backend
- * Handles AI processing requests with DeepSeek API integration
+ * Securely connects frontend to DeepSeek API
  */
 
-// CORS headers for frontend access
+// CORS configuration
 function getCorsHeaders(request) {
   const origin = request.headers.get('Origin');
   const allowedOrigins = [
@@ -11,246 +11,194 @@ function getCorsHeaders(request) {
     'http://localhost:5000',
     'http://127.0.0.1:5000'
   ];
-  
-  return {
-    'Access-Control-Allow-Origin': allowedOrigins.includes(origin) ? origin : 'https://nexusrank-pro.pages.dev',
-    'Access-Control-Allow-Methods': 'GET, POST, OPTIONS',
-    'Access-Control-Allow-Headers': 'Content-Type, Authorization',
+
+  const headers = {
+    'Access-Control-Allow-Methods': 'POST, OPTIONS',
     'Access-Control-Max-Age': '86400',
+    'Content-Type': 'application/json'
   };
+
+  if (origin && allowedOrigins.includes(origin)) {
+    headers['Access-Control-Allow-Origin'] = origin;
+    headers['Vary'] = 'Origin';
+  }
+
+  return headers;
 }
 
-// DeepSeek API configuration
+// DeepSeek API endpoint (NO TRAILING SPACE)
 const DEEPSEEK_API_URL = 'https://api.deepseek.com/v1/chat/completions';
 
-/**
- * Main request handler - Module Worker Format
- */
-export default {
-  async fetch(request, env, ctx) {
-    return handleRequest(request, env);
+// Tool-specific configurations
+const TOOL_CONFIGS = {
+  'improve': {
+    system: 'Improve this text for clarity, fluency, and professionalism.',
+    max_tokens: 4000,
+    temperature: 0.5
+  },
+  'seo-write': {
+    system: 'Write a 5000-10000 word SEO-optimized article. Use H2/H3, bullet points, natural keywords, and human tone. Avoid AI patterns.',
+    max_tokens: 16000,
+    temperature: 0.7
+  },
+  'paraphrase': {
+    system: 'Rewrite this text to be 100% unique and undetectable as AI. Use different sentence structures and synonyms.',
+    max_tokens: 4000,
+    temperature: 0.6
+  },
+  'humanize': {
+    system: 'Make this sound 100% human. Add contractions, minor imperfections, and conversational flow. Undetectable as AI.',
+    max_tokens: 4000,
+    temperature: 0.8
+  },
+  'detect': {
+    system: 'Analyze this text and estimate the probability it was AI-generated. Respond with: "AI Probability: X%" and a 2-sentence explanation.',
+    max_tokens: 1000,
+    temperature: 0.3
+  },
+  'grammar': {
+    system: 'Fix all grammar, spelling, and punctuation errors. Return only the corrected text.',
+    max_tokens: 4000,
+    temperature: 0.2
   }
 };
 
-/**
- * Handle incoming requests
- */
-async function handleRequest(request, env) {
-  const url = new URL(request.url);
-  const path = url.pathname;
+export default {
+  async fetch(request, env) {
+    const url = new URL(request.url);
+    const path = url.pathname;
 
-  // Handle CORS preflight requests
-  if (request.method === 'OPTIONS') {
-    return new Response(null, {
-      status: 200,
-      headers: getCorsHeaders(request),
-    });
-  }
+    // Handle CORS preflight
+    if (request.method === 'OPTIONS') {
+      return new Response(null, {
+        status: 204,
+        headers: getCorsHeaders(request)
+      });
+    }
 
-  // Health check endpoint
-  if (path === '/health' && request.method === 'GET') {
-    return new Response(JSON.stringify({
-      status: 'healthy',
-      timestamp: new Date().toISOString(),
-      version: '1.0.0'
-    }), {
-      status: 200,
-      headers: {
-        ...getCorsHeaders(request),
-        'Content-Type': 'application/json',
-      },
-    });
-  }
+    // Health check
+    if (path === '/health' && request.method === 'GET') {
+      return new Response(JSON.stringify({ status: 'healthy' }), {
+        status: 200,
+        headers: { ...getCorsHeaders(request), 'Content-Type': 'application/json' }
+      });
+    }
 
-  // AI processing endpoints
-  const aiEndpoints = {
-    '/ai/improve': 'improve',
-    '/ai/seo-write': 'seo-write', 
-    '/ai/paraphrase': 'paraphrase',
-    '/ai/humanize': 'humanize',
-    '/ai/detect': 'detect',
-    '/ai/grammar': 'grammar'
-  };
+    // Validate POST request
+    if (request.method !== 'POST') {
+      return createError(request, 'Method not allowed', 405);
+    }
 
-  if (aiEndpoints[path] && request.method === 'POST') {
-    return await handleAIRequest(request, aiEndpoints[path], env);
-  }
+    // Define valid endpoints
+    const validEndpoints = {
+      '/ai/improve': 'improve',
+      '/ai/seo-write': 'seo-write',
+      '/ai/paraphrase': 'paraphrase',
+      '/ai/humanize': 'humanize',
+      '/ai/detect': 'detect',
+      '/ai/grammar': 'grammar'
+    };
 
-  // Handle 404 for unknown routes
-  return new Response(JSON.stringify({
-    success: false,
-    error: 'Endpoint not found'
-  }), {
-    status: 404,
-    headers: {
-      ...getCorsHeaders(request),
-      'Content-Type': 'application/json',
-    },
-  });
-}
+    const tool = validEndpoints[path];
+    if (!tool) {
+      return createError(request, 'Endpoint not found', 404);
+    }
 
-/**
- * Handle AI processing requests
- */
-async function handleAIRequest(request, tool, env) {
-  try {
     // Parse request body
-    const body = await request.json();
-    const { text, prompt } = body;
+    let data;
+    try {
+      data = await request.json();
+    } catch (e) {
+      return createError(request, 'Invalid JSON', 400);
+    }
 
-    // Validate input
+    const text = data.text || data.prompt || '';
     if (!text || typeof text !== 'string' || text.trim().length === 0) {
-      return createErrorResponse(request, 'Text input is required and cannot be empty', 400);
+      return createError(request, 'Text input is required', 400);
     }
 
-    if (!prompt || typeof prompt !== 'string') {
-      return createErrorResponse(request, 'Prompt is required', 400);
-    }
-
-    // Get API key from environment
+    // Get API key
     const apiKey = env.DEEPSEEK_API_KEY;
     if (!apiKey) {
-      console.error('DEEPSEEK_API_KEY environment variable not set');
-      return createErrorResponse(request, 'AI service configuration error', 500);
+      console.error('DEEPSEEK_API_KEY not set');
+      return createError(request, 'AI service configuration error', 500);
     }
 
-    // Create the full prompt for DeepSeek
-    const fullPrompt = `${prompt}\n\nText to process:\n${text}`;
+    // Get tool config
+    const config = TOOL_CONFIGS[tool];
+    if (!config) {
+      return createError(request, 'Tool configuration not found', 500);
+    }
 
-    // Make request to DeepSeek API
-    const deepseekResponse = await fetch(DEEPSEEK_API_URL, {
-      method: 'POST',
-      headers: {
-        'Authorization': `Bearer ${apiKey}`,
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({
-        model: 'deepseek-chat',
-        messages: [
-          {
-            role: 'system',
-            content: 'You are a professional AI assistant specializing in content creation and optimization. Provide high-quality, human-like responses that meet the specific requirements given in the user prompt.'
-          },
-          {
-            role: 'user',
-            content: fullPrompt
-          }
-        ],
-        max_tokens: getMaxTokensForTool(tool),
-        temperature: getTemperatureForTool(tool),
-        stream: false
-      })
-    });
+    try {
+      const response = await fetch(DEEPSEEK_API_URL, {
+        method: 'POST',
+        headers: {
+          'Authorization': `Bearer ${apiKey}`,
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+          model: 'deepseek-chat',
+          messages: [
+            { role: 'system', content: config.system },
+            { role: 'user', content: text }
+          ],
+          max_tokens: config.max_tokens,
+          temperature: config.temperature,
+          stream: false
+        })
+      });
 
-    if (!deepseekResponse.ok) {
-      const errorText = await deepseekResponse.text();
-      console.error('DeepSeek API error:', deepseekResponse.status, errorText);
-      
-      if (deepseekResponse.status === 401) {
-        return createErrorResponse(request, 'AI service authentication failed', 500);
-      } else if (deepseekResponse.status === 429) {
-        return createErrorResponse(request, 'AI service rate limit exceeded. Please try again in a moment.', 429);
-      } else {
-        return createErrorResponse(request, 'AI service temporarily unavailable', 503);
+      if (!response.ok) {
+        const errorText = await response.text();
+        console.error(`DeepSeek API error: ${response.status} ${errorText}`);
+        if (response.status === 401) {
+          return createError(request, 'AI service authentication failed', 500);
+        } else if (response.status === 429) {
+          return createError(request, 'Rate limit exceeded', 429);
+        } else {
+          return createError(request, 'AI service unavailable', 503);
+        }
       }
+
+      const result = await response.json();
+      const aiText = result.choices?.[0]?.message?.content?.trim();
+
+      if (!aiText) {
+        return createError(request, 'Empty response from AI', 500);
+      }
+
+      return new Response(JSON.stringify({
+        success: true,
+        result: aiText,
+        tool: tool,
+        timestamp: new Date().toISOString()
+      }), {
+        status: 200,
+        headers: {
+          ...getCorsHeaders(request),
+          'Content-Type': 'application/json'
+        }
+      });
+
+    } catch (error) {
+      console.error('Worker error:', error);
+      return createError(request, 'Internal server error', 500);
     }
-
-    const deepseekData = await deepseekResponse.json();
-    
-    // Extract the AI response
-    if (!deepseekData.choices || !deepseekData.choices[0] || !deepseekData.choices[0].message) {
-      console.error('Unexpected DeepSeek response format:', deepseekData);
-      return createErrorResponse(request, 'Invalid response from AI service', 500);
-    }
-
-    const aiResult = deepseekData.choices[0].message.content;
-
-    if (!aiResult || aiResult.trim().length === 0) {
-      return createErrorResponse(request, 'AI service returned empty response', 500);
-    }
-
-    // Return successful response
-    return new Response(JSON.stringify({
-      success: true,
-      result: aiResult.trim(),
-      tool: tool,
-      timestamp: new Date().toISOString(),
-      usage: deepseekData.usage || null
-    }), {
-      status: 200,
-      headers: {
-        ...getCorsHeaders(request),
-        'Content-Type': 'application/json',
-      },
-    });
-
-  } catch (error) {
-    console.error('Error processing AI request:', error);
-    return createErrorResponse(request, 'Internal server error occurred', 500);
   }
-}
+};
 
-/**
- * Get max tokens based on tool type
- */
-function getMaxTokensForTool(tool) {
-  const tokenLimits = {
-    'seo-write': 16000,  // For long-form content
-    'improve': 4000,     // For text improvement
-    'humanize': 4000,    // For humanizing text
-    'paraphrase': 4000,  // For paraphrasing
-    'detect': 1000,      // For AI detection (shorter response)
-    'grammar': 4000      // For grammar correction
-  };
-  
-  return tokenLimits[tool] || 4000;
-}
-
-/**
- * Get temperature based on tool type
- */
-function getTemperatureForTool(tool) {
-  const temperatures = {
-    'seo-write': 0.7,    // Creative for content writing
-    'improve': 0.5,      // Balanced for improvement
-    'humanize': 0.8,     // More creative for humanizing
-    'paraphrase': 0.6,   // Slightly creative for paraphrasing
-    'detect': 0.3,       // Lower for analytical detection
-    'grammar': 0.2       // Very low for precise grammar correction
-  };
-  
-  return temperatures[tool] || 0.5;
-}
-
-/**
- * Create standardized error response
- */
-function createErrorResponse(request, message, status = 400) {
+// Unified error response
+function createError(request, message, status) {
   return new Response(JSON.stringify({
     success: false,
     error: message,
     timestamp: new Date().toISOString()
   }), {
-    status: status,
+    status,
     headers: {
       ...getCorsHeaders(request),
-      'Content-Type': 'application/json',
-    },
+      'Content-Type': 'application/json'
+    }
   });
-}
-
-/**
- * Log request for debugging (in development)
- */
-function logRequest(request, tool, success) {
-  // Only log in development/staging environments
-  if (typeof DEBUG !== 'undefined' && DEBUG) {
-    console.log({
-      timestamp: new Date().toISOString(),
-      method: request.method,
-      tool: tool,
-      success: success,
-      userAgent: request.headers.get('User-Agent') || 'unknown'
-    });
-  }
 }
