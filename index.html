@@ -12,20 +12,48 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 </head>
 <body>
-    <div class="container">
-        <!-- Header -->
-        <header class="header">
+    <!-- Main Header with Navigation -->
+    <header class="main-header">
+        <div class="header-container">
+            <!-- Logo -->
             <div class="logo">
                 <i class="fas fa-rocket"></i>
                 <h1>NexusRank Pro</h1>
             </div>
-            <div class="tagline">
-                <p>The future of SEO intelligence — fast, powerful, intuitive.</p>
-            </div>
-        </header>
 
-        <!-- Main Dashboard -->
-        <main class="dashboard">
+            <!-- Desktop Navigation -->
+            <nav class="nav-desktop">
+                <a href="#dashboard" class="nav-link">Tools</a>
+                <a href="pages/about.html" class="nav-link">About</a>
+                <a href="pages/contact.html" class="nav-link">Contact</a>
+                <a href="pages/privacy.html" class="nav-link">Privacy</a>
+                <a href="pages/terms.html" class="nav-link">Terms</a>
+            </nav>
+
+            <!-- CTA Button -->
+            <a href="https://www.patreon.com/posts/ai-translate-and-136860218" target="_blank" class="header-cta-btn">
+                🚀 Get Unlimited Access
+            </a>
+
+            <!-- Mobile Menu Button -->
+            <button class="mobile-toggle" id="mobileToggle">
+                <i class="fas fa-bars"></i>
+            </button>
+        </div>
+
+        <!-- Mobile Navigation -->
+        <nav class="nav-mobile" id="mobileNav">
+            <a href="#dashboard" class="nav-link">Tools</a>
+            <a href="pages/about.html" class="nav-link">About</a>
+            <a href="pages/contact.html" class="nav-link">Contact</a>
+            <a href="pages/privacy.html" class="nav-link">Privacy</a>
+            <a href="pages/terms.html" class="nav-link">Terms</a>
+        </nav>
+    </header>
+
+    <!-- Main Dashboard -->
+    <div class="container">
+        <main class="dashboard" id="dashboard">
             <div class="tools-grid">
                 <!-- Tool 1: Website SEO Score Checker -->
                 <div class="tool-card" data-tool="seo-checker">
@@ -321,6 +349,20 @@
             </div>
         </div>
     </footer>
+
+    <!-- Mobile Menu Script -->
+    <script>
+        document.getElementById('mobileToggle').addEventListener('click', () => {
+            document.querySelector('.nav-mobile').classList.toggle('active');
+        });
+
+        // Close mobile menu when clicking a link
+        document.querySelectorAll('.nav-mobile .nav-link').forEach(link => {
+            link.addEventListener('click', () => {
+                document.querySelector('.nav-mobile').classList.remove('active');
+            });
+        });
+    </script>
 
     <script src="js/app.js"></script>
 </body>
