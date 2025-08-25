@@ -793,3 +793,90 @@ body {
     background: var(--electric-purple);
     color: var(--primary-black);
 }
+
+/* Footer */
+.footer {
+    background: rgba(0, 0, 0, 0.9);
+    border-top: 1px solid var(--electric-purple);
+    padding: 2rem 1rem 1rem;
+    text-align: center;
+    margin-top: 4rem;
+}
+
+.footer-links {
+    margin-bottom: 1rem;
+}
+
+.footer-links a {
+    color: var(--neon-cyan);
+    text-decoration: none;
+    margin: 0 0.5rem;
+    transition: all 0.3s ease;
+    font-size: 0.9rem;
+}
+
+.footer-links a:hover {
+    color: var(--electric-purple);
+    text-shadow: 0 0 5px var(--electric-purple);
+}
+
+.footer p {
+    color: var(--text-secondary);
+    margin: 0;
+    font-size: 0.85rem;
+}
+
+/* Page content styling for legal pages */
+.page-header {
+    text-align: center;
+    margin-bottom: 3rem;
+    padding-bottom: 2rem;
+    border-bottom: 1px solid rgba(0, 255, 255, 0.3);
+}
+
+.page-header h1 {
+    color: var(--neon-cyan);
+    margin-bottom: 0.5rem;
+    font-family: 'JetBrains Mono', monospace;
+}
+
+.page-header p {
+    color: var(--text-secondary);
+    font-size: 0.9rem;
+}
+
+.content-section {
+    max-width: 800px;
+    margin: 0 auto;
+    line-height: 1.7;
+}
+
+.content-section h2 {
+    color: var(--electric-purple);
+    margin: 2rem 0 1rem;
+    font-family: 'JetBrains Mono', monospace;
+}
+
+.content-section h3 {
+    color: var(--neon-cyan);
+    margin: 1.5rem 0 0.8rem;
+}
+
+.content-section h4 {
+    color: var(--text-primary);
+    margin: 1rem 0 0.5rem;
+}
+
+.content-section ul {
+    margin: 1rem 0;
+    padding-left: 1.5rem;
+}
+
+.content-section li {
+    margin: 0.5rem 0;
+    color: var(--text-secondary);
+}
+
+.content-section strong {
+    color: var(--text-primary);
+}
