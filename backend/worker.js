@@ -1,26 +1,24 @@
 /**
- * NexusRank Pro - FINAL Working Cloudflare Worker
- * No spaces, CORS fixed, API key debugged
+ * NexusRank Pro - Cloudflare Worker with Google Gemini
+ * Securely connects frontend to Gemini API
  */
 
-// ✅ Allowed origins (NO TRAILING SPACES!)
+// Allowed origins (NO TRAILING SPACES!)
 const ALLOWED_ORIGINS = [
-  'https://nexusrank-pro.pages.dev',      // ✅ No spaces
+  'https://nexusrank-pro.pages.dev',
   'http://localhost:5000',
   'http://127.0.0.1:5000'
 ];
 
-// ✅ CORS headers
+// CORS headers
 function getCorsHeaders(request) {
   const origin = request.headers.get('Origin');
-
   const headers = {
     'Access-Control-Allow-Methods': 'POST, OPTIONS',
     'Access-Control-Max-Age': '86400',
     'Content-Type': 'application/json'
   };
 
-  // ✅ Only allow exact match (no spaces!)
   if (origin && ALLOWED_ORIGINS.includes(origin)) {
     headers['Access-Control-Allow-Origin'] = origin;
     headers['Vary'] = 'Origin';
@@ -29,26 +27,20 @@ function getCorsHeaders(request) {
   return headers;
 }
 
-// ✅ Handle preflight (OPTIONS) requests
+// Handle preflight (OPTIONS)
 function handleOptions(request) {
   const corsHeaders = getCorsHeaders(request);
-  
-  // ✅ Allow Content-Type header in preflight
   corsHeaders['Access-Control-Allow-Headers'] = 'Content-Type';
-
-  return new Response(null, {
-    status: 204,
-    headers: corsHeaders
-  });
+  return new Response(null, { status: 204, headers: corsHeaders });
 }
 
-// ✅ DeepSeek API URL (NO TRAILING SPACE!)
-const DEEPSEEK_API_URL = 'https://api.deepseek.com/v1/chat/completions'; // ✅ Fixed
+// Gemini API URL
+const GEMINI_API_URL = 'https://generativelanguage.googleapis.com/v1beta/models/gemini-pro:generateContent';
 
-// ✅ Tool configurations
+// Tool configurations with optimized prompts
 const TOOL_CONFIGS = {
   'improve': {
-    system: 'Improve this text for clarity, fluency, and professionalism.',
+    system: 'Improve this text for clarity, fluency, and professionalism. Keep it under 500 words.',
     max_tokens: 4000,
     temperature: 0.5
   },
@@ -84,23 +76,12 @@ export default {
     const url = new URL(request.url);
     const path = url.pathname;
 
-    // ✅ Log for debugging
-    console.log('Incoming request:', request.method, path);
-
-    // ✅ Handle CORS preflight
+    // Handle CORS preflight
     if (request.method === 'OPTIONS') {
       return handleOptions(request);
     }
 
-    // ✅ Health check
-    if (path === '/health' && request.method === 'GET') {
-      return new Response(JSON.stringify({ status: 'healthy' }), {
-        status: 200,
-        headers: { ...getCorsHeaders(request), 'Content-Type': 'application/json' }
-      });
-    }
-
-    // ✅ Validate POST
+    // Validate POST
     if (request.method !== 'POST') {
       return new Response(JSON.stringify({ error: 'Method not allowed' }), {
         status: 405,
@@ -108,7 +89,7 @@ export default {
       });
     }
 
-    // ✅ Define valid AI endpoints
+    // Define valid endpoints
     const validEndpoints = {
       '/ai/improve': 'improve',
       '/ai/seo-write': 'seo-write',
@@ -126,7 +107,7 @@ export default {
       });
     }
 
-    // ✅ Parse request body
+    // Parse request body
     let data;
     try {
       data = await request.json();
@@ -137,7 +118,7 @@ export default {
       });
     }
 
-    const text = data.text || data.prompt || '';
+    const text = data.text || '';
     if (!text || typeof text !== 'string' || text.trim().length === 0) {
       return new Response(JSON.stringify({ error: 'Text input is required' }), {
         status: 400,
@@ -145,25 +126,17 @@ export default {
       });
     }
 
-    // ✅ Get API key
-    const apiKey = env.DEEPSEEK_API_KEY;
-    
-    // 🔍 DEBUG: Log if key exists
-    console.log('API Key exists:', !!apiKey);
-    if (apiKey) {
-      console.log('First 4 chars:', apiKey.substring(0, 4));
-    }
-
+    // Get Gemini API key
+    const apiKey = env.GEMINI_API_KEY;
     if (!apiKey) {
-      console.error('❌ DEEPSEEK_API_KEY is MISSING or empty!');
-      return new Response(JSON.stringify({ 
-        error: 'AI service configuration error' 
-      }), {
+      console.error('GEMINI_API_KEY not set');
+      return new Response(JSON.stringify({ error: 'AI service configuration error' }), {
         status: 500,
         headers: getCorsHeaders(request)
       });
     }
 
+    // Get tool config
     const config = TOOL_CONFIGS[tool];
     if (!config) {
       return new Response(JSON.stringify({ error: 'Tool config not found' }), {
@@ -173,44 +146,30 @@ export default {
     }
 
     try {
-      const response = await fetch(DEEPSEEK_API_URL, {
+      const response = await fetch(`${GEMINI_API_URL}?key=${apiKey}`, {
         method: 'POST',
-        headers: {
-          'Authorization': `Bearer ${apiKey}`,
-          'Content-Type': 'application/json'
-        },
+        headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
-          model: 'deepseek-chat',
-          messages: [
-            { role: 'system', content: config.system },
-            { role: 'user', content: text }
-          ],
-          max_tokens: config.max_tokens,
-          temperature: config.temperature
+          contents: [{
+            parts: [{ text: `${config.system}\n\n${text}` }]
+          }]
         })
       });
 
       if (!response.ok) {
         const errorText = await response.text();
-        console.error('❌ DeepSeek API error:', response.status, errorText);
-        if (response.status === 401) {
-          return new Response(JSON.stringify({ error: 'AI authentication failed' }), {
-            status: 500,
-            headers: getCorsHeaders(request)
-          });
-        }
-        return new Response(JSON.stringify({ error: 'AI service unavailable' }), {
+        console.error('Gemini API error:', errorText);
+        return new Response(JSON.stringify({ error: 'AI service failed' }), {
           status: 503,
           headers: getCorsHeaders(request)
         });
       }
 
       const result = await response.json();
-      const aiText = result.choices?.[0]?.message?.content?.trim();
+      const aiText = result.candidates?.[0]?.content?.parts?.[0]?.text?.trim();
 
       if (!aiText) {
-        console.error('❌ Empty AI response:', result);
-        return new Response(JSON.stringify({ error: 'Empty AI response' }), {
+        return new Response(JSON.stringify({ error: 'Empty response from AI' }), {
           status: 500,
           headers: getCorsHeaders(request)
         });
@@ -230,7 +189,7 @@ export default {
       });
 
     } catch (error) {
-      console.error('❌ Worker error:', error);
+      console.error('Worker error:', error);
       return new Response(JSON.stringify({ error: 'Internal server error' }), {
         status: 500,
         headers: getCorsHeaders(request)
