@@ -1,199 +1,290 @@
 /**
- * NexusRank Pro - Cloudflare Worker with Google Gemini
- * Securely connects frontend to Gemini API
+ * NexusRank Pro - Final AI SEO Toolkit
+ * Powered by Google Gemini via Cloudflare Worker
  */
 
-// Allowed origins (NO TRAILING SPACES!)
-const ALLOWED_ORIGINS = [
-  'https://nexusrank-pro.pages.dev',
-  'http://localhost:5000',
-  'http://127.0.0.1:5000'
-];
+class NexusRankApp {
+  constructor() {
+    // ✅ Fixed URL (no trailing spaces!)
+    this.apiBaseUrl = 'https://nexusrank-ai.shahshameer383.workers.dev';
 
-// CORS headers
-function getCorsHeaders(request) {
-  const origin = request.headers.get('Origin');
-  const headers = {
-    'Access-Control-Allow-Methods': 'POST, OPTIONS',
-    'Access-Control-Max-Age': '86400',
-    'Content-Type': 'application/json'
-  };
+    this.currentTool = null;
+    this.isProUser = false;
+    this.usageData = this.loadUsageData();
 
-  if (origin && ALLOWED_ORIGINS.includes(origin)) {
-    headers['Access-Control-Allow-Origin'] = origin;
-    headers['Vary'] = 'Origin';
-  }
-
-  return headers;
-}
-
-// Handle preflight (OPTIONS)
-function handleOptions(request) {
-  const corsHeaders = getCorsHeaders(request);
-  corsHeaders['Access-Control-Allow-Headers'] = 'Content-Type';
-  return new Response(null, { status: 204, headers: corsHeaders });
-}
-
-// Gemini API URL
-const GEMINI_API_URL = 'https://generativelanguage.googleapis.com/v1beta/models/gemini-pro:generateContent';
-
-// Tool configurations with optimized prompts
-const TOOL_CONFIGS = {
-  'improve': {
-    system: 'Improve this text for clarity, fluency, and professionalism. Keep it under 500 words.',
-    max_tokens: 4000,
-    temperature: 0.5
-  },
-  'seo-write': {
-    system: 'Write a 5000-10000 word SEO-optimized article. Use H2/H3, bullet points, natural keywords, and human tone. Avoid AI patterns.',
-    max_tokens: 16000,
-    temperature: 0.7
-  },
-  'paraphrase': {
-    system: 'Rewrite this text to be 100% unique and AI-undetectable. Use different sentence structures and synonyms.',
-    max_tokens: 4000,
-    temperature: 0.6
-  },
-  'humanize': {
-    system: 'Make this sound 100% human. Add contractions, minor imperfections, and conversational flow. Undetectable as AI.',
-    max_tokens: 4000,
-    temperature: 0.8
-  },
-  'detect': {
-    system: 'Analyze this text and estimate the probability it was AI-generated. Respond with: "AI Probability: X%" and a 2-sentence explanation.',
-    max_tokens: 1000,
-    temperature: 0.3
-  },
-  'grammar': {
-    system: 'Fix all grammar, spelling, and punctuation errors. Return only the corrected text.',
-    max_tokens: 4000,
-    temperature: 0.2
-  }
-};
-
-export default {
-  async fetch(request, env) {
-    const url = new URL(request.url);
-    const path = url.pathname;
-
-    // Handle CORS preflight
-    if (request.method === 'OPTIONS') {
-      return handleOptions(request);
-    }
-
-    // Validate POST
-    if (request.method !== 'POST') {
-      return new Response(JSON.stringify({ error: 'Method not allowed' }), {
-        status: 405,
-        headers: getCorsHeaders(request)
-      });
-    }
-
-    // Define valid endpoints
-    const validEndpoints = {
-      '/ai/improve': 'improve',
-      '/ai/seo-write': 'seo-write',
-      '/ai/paraphrase': 'paraphrase',
-      '/ai/humanize': 'humanize',
-      '/ai/detect': 'detect',
-      '/ai/grammar': 'grammar'
+    // Tool configurations
+    this.tools = {
+      'seo-writer': {
+        name: 'AI SEO Writer',
+        endpoint: '/ai/seo-write',
+        inputLabel: 'Enter your topic or keywords:',
+        placeholder: 'Best AI Tools for Content Marketing',
+        prompt: 'Write a 5000-10000 word SEO-optimized article. Use H2/H3, bullet points, natural keywords, and human tone.'
+      },
+      'humanizer': {
+        name: 'AI Humanizer',
+        endpoint: '/ai/humanize',
+        inputLabel: 'Enter AI-generated text to humanize:',
+        placeholder: 'Paste AI text to make it sound human...',
+        prompt: 'Make this sound 100% human. Add contractions, imperfections, and conversational flow.'
+      },
+      'detector': {
+        name: 'AI Detector',
+        endpoint: '/ai/detect',
+        inputLabel: 'Enter text to analyze for AI content:',
+        placeholder: 'Paste text to check if it’s AI-generated...',
+        prompt: 'Analyze this text and estimate the AI probability. Respond with: "AI Probability: X%" and reasoning.'
+      },
+      'paraphrase': {
+        name: 'Paraphrasing Tool',
+        endpoint: '/ai/paraphrase',
+        inputLabel: 'Enter text to paraphrase:',
+        placeholder: 'Rewrite this text to be unique and natural...',
+        prompt: 'Rewrite this to be 100% unique and undetectable as AI. Keep meaning but change structure.'
+      },
+      'grammar': {
+        name: 'Grammar Checker',
+        endpoint: '/ai/grammar',
+        inputLabel: 'Enter text to fix grammar:',
+        placeholder: 'Fix grammar, spelling, and punctuation errors...',
+        prompt: 'Fix all grammar, spelling, and punctuation errors. Return only the corrected version.'
+      },
+      'improve': {
+        name: 'Text Improver',
+        endpoint: '/ai/improve',
+        inputLabel: 'Enter text to improve:',
+        placeholder: 'Enhance clarity, fluency, and professionalism...',
+        prompt: 'Improve this text for clarity, fluency, and professionalism.'
+      }
     };
 
-    const tool = validEndpoints[path];
-    if (!tool) {
-      return new Response(JSON.stringify({ error: 'Endpoint not found' }), {
-        status: 404,
-        headers: getCorsHeaders(request)
+    this.init();
+  }
+
+  init() {
+    this.setupEventListeners();
+    this.updateUsageDisplay();
+    this.checkProStatus();
+  }
+
+  setupEventListeners() {
+    // Mobile menu toggle
+    const hamburger = document.getElementById('hamburger');
+    const navMenu = document.getElementById('nav-menu');
+
+    if (hamburger && navMenu) {
+      hamburger.addEventListener('click', () => {
+        hamburger.classList.toggle('active');
+        navMenu.classList.toggle('active');
       });
     }
 
-    // Parse request body
-    let data;
-    try {
-      data = await request.json();
-    } catch (e) {
-      return new Response(JSON.stringify({ error: 'Invalid JSON' }), {
-        status: 400,
-        headers: getCorsHeaders(request)
+    // Close menu on link click
+    document.querySelectorAll('.nav-link').forEach(link => {
+      link.addEventListener('click', () => {
+        hamburger?.classList.remove('active');
+        navMenu?.classList.remove('active');
       });
-    }
+    });
 
-    const text = data.text || '';
-    if (!text || typeof text !== 'string' || text.trim().length === 0) {
-      return new Response(JSON.stringify({ error: 'Text input is required' }), {
-        status: 400,
-        headers: getCorsHeaders(request)
-      });
-    }
-
-    // Get Gemini API key
-    const apiKey = env.GEMINI_API_KEY;
-    if (!apiKey) {
-      console.error('GEMINI_API_KEY not set');
-      return new Response(JSON.stringify({ error: 'AI service configuration error' }), {
-        status: 500,
-        headers: getCorsHeaders(request)
-      });
-    }
-
-    // Get tool config
-    const config = TOOL_CONFIGS[tool];
-    if (!config) {
-      return new Response(JSON.stringify({ error: 'Tool config not found' }), {
-        status: 500,
-        headers: getCorsHeaders(request)
-      });
-    }
-
-    try {
-      const response = await fetch(`${GEMINI_API_URL}?key=${apiKey}`, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          contents: [{
-            parts: [{ text: `${config.system}\n\n${text}` }]
-          }]
-        })
-      });
-
-      if (!response.ok) {
-        const errorText = await response.text();
-        console.error('Gemini API error:', errorText);
-        return new Response(JSON.stringify({ error: 'AI service failed' }), {
-          status: 503,
-          headers: getCorsHeaders(request)
-        });
+    // Modal close on backdrop click
+    document.addEventListener('click', (e) => {
+      if (e.target.classList.contains('modal')) {
+        this.closeTool();
+        this.closeProLogin();
       }
+    });
 
-      const result = await response.json();
-      const aiText = result.candidates?.[0]?.content?.parts?.[0]?.text?.trim();
-
-      if (!aiText) {
-        return new Response(JSON.stringify({ error: 'Empty response from AI' }), {
-          status: 500,
-          headers: getCorsHeaders(request)
-        });
+    // Escape key to close modals
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape') {
+        this.closeTool();
+        this.closeProLogin();
       }
+    });
 
-      return new Response(JSON.stringify({
-        success: true,
-        result: aiText,
-        tool: tool,
-        timestamp: new Date().toISOString()
-      }), {
-        status: 200,
-        headers: {
-          ...getCorsHeaders(request),
-          'Content-Type': 'application/json'
+    // Pro login form
+    const proLoginForm = document.getElementById('pro-login-form');
+    if (proLoginForm) {
+      proLoginForm.addEventListener('submit', (e) => {
+        e.preventDefault();
+        this.handleProLogin();
+      });
+    }
+
+    // Smooth scrolling
+    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+      anchor.addEventListener('click', (e) => {
+        e.preventDefault();
+        const target = document.querySelector(anchor.getAttribute('href'));
+        if (target) {
+          target.scrollIntoView({ behavior: 'smooth', block: 'start' });
         }
       });
+    });
+  }
 
+  loadUsageData() {
+    try {
+      const data = localStorage.getItem('nexusrank_usage');
+      return data ? JSON.parse(data) : this.getDefaultUsageData();
     } catch (error) {
-      console.error('Worker error:', error);
-      return new Response(JSON.stringify({ error: 'Internal server error' }), {
-        status: 500,
-        headers: getCorsHeaders(request)
-      });
+      console.error('Error loading usage data:', error);
+      return this.getDefaultUsageData();
     }
   }
-};
+
+  getDefaultUsageData() {
+    const usage = {};
+    Object.keys(this.tools).forEach(tool => {
+      usage[tool] = { count: 0, lastReset: Date.now() };
+    });
+    return usage;
+  }
+
+  saveUsageData() {
+    try {
+      localStorage.setItem('nexusrank_usage', JSON.stringify(this.usageData));
+    } catch (error) {
+      console.error('Error saving usage data:', error);
+    }
+  }
+
+  canUseFreeTool(toolName) {
+    if (this.isProUser) return true;
+
+    const tool = this.usageData[toolName];
+    if (!tool) return true;
+
+    const now = Date.now();
+    const daysSinceReset = (now - tool.lastReset) / (1000 * 60 * 60 * 24);
+
+    if (daysSinceReset >= 1) {
+      tool.count = 0;
+      tool.lastReset = now;
+      this.saveUsageData();
+    }
+
+    return tool.count < 2;
+  }
+
+  incrementUsage(toolName) {
+    if (this.isProUser) return;
+
+    if (!this.usageData[toolName]) {
+      this.usageData[toolName] = { count: 0, lastReset: Date.now() };
+    }
+
+    this.usageData[toolName].count++;
+    this.saveUsageData();
+    this.updateUsageDisplay();
+  }
+
+  updateUsageDisplay() {
+    const usageCountElement = document.getElementById('usage-count');
+    if (usageCountElement && this.currentTool) {
+      if (this.isProUser) {
+        usageCountElement.textContent = '∞';
+        usageCountElement.parentElement.innerHTML = '<span class="usage-count">Pro User - Unlimited uses</span>';
+      } else {
+        const remaining = Math.max(0, 2 - (this.usageData[this.currentTool]?.count || 0));
+        usageCountElement.textContent = remaining;
+      }
+    }
+  }
+
+  checkProStatus() {
+    try {
+      this.isProUser = localStorage.getItem('nexusrank_pro') === 'true';
+    } catch (error) {
+      console.error('Error checking pro status:', error);
+      this.isProUser = false;
+    }
+  }
+
+  openTool(toolName) {
+    const tool = this.tools[toolName];
+    if (!tool) {
+      console.error('Tool not found:', toolName);
+      return;
+    }
+
+    this.currentTool = toolName;
+
+    // Update modal
+    document.getElementById('modal-title').textContent = tool.name;
+    document.getElementById('input-label').textContent = tool.inputLabel;
+    document.getElementById('tool-input').placeholder = tool.placeholder;
+    document.getElementById('tool-input').value = '';
+
+    // Reset output
+    document.getElementById('output-section').style.display = 'none';
+    document.getElementById('loading').style.display = 'none';
+    document.getElementById('tool-output').innerHTML = '';
+
+    this.updateUsageDisplay();
+
+    // Show modal
+    document.getElementById('tool-modal').classList.add('show');
+    document.body.style.overflow = 'hidden';
+
+    // Focus input
+    setTimeout(() => {
+      document.getElementById('tool-input').focus();
+    }, 100);
+  }
+
+  closeTool() {
+    document.getElementById('tool-modal').classList.remove('show');
+    document.body.style.overflow = 'auto';
+    this.currentTool = null;
+  }
+
+  clearInput() {
+    document.getElementById('tool-input').value = '';
+    document.getElementById('tool-input').focus();
+  }
+
+  async processText() {
+    const inputText = document.getElementById('tool-input').value.trim();
+
+    if (!inputText) {
+      this.showError('Please enter some text to process.');
+      return;
+    }
+
+    if (!this.currentTool) {
+      this.showError('No tool selected.');
+      return;
+    }
+
+    if (!this.canUseFreeTool(this.currentTool)) {
+      this.showError('You have reached your free usage limit. Upgrade to Pro for unlimited access.');
+      return;
+    }
+
+    const processBtn = document.getElementById('process-btn');
+    const loading = document.getElementById('loading');
+    const outputSection = document.getElementById('output-section');
+
+    processBtn.disabled = true;
+    processBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Processing...';
+    loading.style.display = 'block';
+    outputSection.style.display = 'none';
+
+    try {
+      const tool = this.tools[this.currentTool];
+      const response = await this.makeAPIRequest(tool.endpoint, {
+        text: inputText,
+        prompt: tool.prompt
+      });
+
+      if (!response.success) {
+        throw new Error(response.error || 'Failed to process text');
+      }
+
+      this.showResult(response.result);
+      this.incrementUsage(this.currentTool);
+
+    } catch (error) {
+      console.error
