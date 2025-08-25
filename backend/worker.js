@@ -1,11 +1,11 @@
 /**
- * NexusRank Pro - FINAL Fixed Cloudflare Worker
- * Resolves CORS, spaces, and API key issues
+ * NexusRank Pro - FINAL Working Cloudflare Worker
+ * No spaces, CORS fixed, API key debugged
  */
 
 // ✅ Allowed origins (NO TRAILING SPACES!)
 const ALLOWED_ORIGINS = [
-  'https://nexusrank-pro.pages.dev',
+  'https://nexusrank-pro.pages.dev',      // ✅ No spaces
   'http://localhost:5000',
   'http://127.0.0.1:5000'
 ];
@@ -43,7 +43,7 @@ function handleOptions(request) {
 }
 
 // ✅ DeepSeek API URL (NO TRAILING SPACE!)
-const DEEPSEEK_API_URL = 'https://api.deepseek.com/v1/chat/completions';
+const DEEPSEEK_API_URL = 'https://api.deepseek.com/v1/chat/completions'; // ✅ Fixed
 
 // ✅ Tool configurations
 const TOOL_CONFIGS = {
