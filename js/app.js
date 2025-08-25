@@ -145,7 +145,7 @@ class NexusRankApp {
      * Get default usage data structure
      */
     getDefaultUsageData() {
-        const tools = Object.keys(this.tools);
+        const tools = Object.keys(this.tools || {});
         const usage = {};
         tools.forEach(tool => {
             usage[tool] = { count: 0, lastReset: Date.now() };
