@@ -1,288 +1,226 @@
-// backend/worker.js
-// ✅ Cloudflare Worker for NexusRank Pro - Fixed & Optimized
+// Cloudflare Worker for NexusRank Pro
+// Production-ready DeepSeek API integration
 
-export default {
-  async fetch(request, env) {
-    // === CORS Handling ===
-    const origin = request.headers.get('Origin');
-    const allowedOrigins = [
-      'https://nexusrank-pro.pages.dev',
-      'https://nexusrank-pro.pages.dev', // Ensure exact match
-      'http://localhost:8000', // For local testing
-      'http://127.0.0.1:8000'
-    ];
-
-    const corsHeaders = {
-      'Access-Control-Allow-Methods': 'POST, OPTIONS',
-      'Access-Control-Max-Age': '86400',
-      'Content-Type': 'application/json'
-    };
-
-    // Handle preflight (OPTIONS) requests
-    if (request.method === 'OPTIONS') {
-      if (origin && allowedOrigins.some(o => o === origin)) {
-        return new Response(null, {
-          status: 204,
-          headers: {
-            ...corsHeaders,
-            'Access-Control-Allow-Origin': origin,
-            'Access-Control-Allow-Headers': 'Content-Type',
-            'Vary': 'Origin'
-          }
-        });
-      }
-      return new Response('Forbidden', { status: 403 });
-    }
-
-    // Only allow POST
-    if (request.method !== 'POST') {
-      return new Response(JSON.stringify({ error: 'Method not allowed' }), {
-        status: 405,
-        headers: { 'Content-Type': 'application/json' }
-      });
-    }
-
-    // Validate path
-    const url = new URL(request.url);
-    const path = url.pathname;
-
-    if (!path.startsWith('/ai/')) {
-      return new Response(JSON.stringify({ error: 'Endpoint not found' }), {
-        status: 404,
-        headers: { 'Content-Type': 'application/json' }
-      });
-    }
-
-    // Parse request body
-    let requestData;
-    try {
-      requestData = await request.json();
-    } catch (e) {
-      return new Response(JSON.stringify({ error: 'Invalid JSON' }), {
-        status: 400,
-        headers: { 'Content-Type': 'application/json' }
-      });
-    }
-
-    if (!requestData.text && path !== '/ai/seo-write') {
-      return new Response(JSON.stringify({ error: 'Missing text input' }), {
-        status: 400,
-        headers: { 'Content-Type': 'application/json' }
-      });
-    }
-
-    try {
-      let result;
-
-      switch (path) {
-        case '/ai/improve':
-          result = await handleImprove(requestData, env);
-          break;
-        case '/ai/seo-write':
-          result = await handleSEOWrite(requestData, env);
-          break;
-        case '/ai/paraphrase':
-          result = await handleParaphrase(requestData, env);
-          break;
-        case '/ai/humanize':
-          result = await handleHumanize(requestData, env);
-          break;
-        case '/ai/detect':
-          result = await handleDetect(requestData, env);
-          break;
-        default:
-          return new Response(JSON.stringify({ error: 'Endpoint not found' }), {
-            status: 404,
-            headers: { 'Content-Type': 'application/json' }
-          });
-      }
-
-      // Set CORS header based on origin
-      const responseHeaders = {
-        ...corsHeaders,
-        'Content-Type': 'application/json'
-      };
-
-      if (origin && allowedOrigins.some(o => o === origin)) {
-        responseHeaders['Access-Control-Allow-Origin'] = origin;
-        responseHeaders['Vary'] = 'Origin';
-      }
-
-      return new Response(JSON.stringify(result), {
-        status: 200,
-        headers: responseHeaders
-      });
-
-    } catch (error) {
-      console.error('Worker error:', error);
-      const responseHeaders = { 'Content-Type': 'application/json' };
-      const origin = request.headers.get('Origin');
-      if (origin && allowedOrigins.some(o => o === origin)) {
-        responseHeaders['Access-Control-Allow-Origin'] = origin;
-      }
-
-      return new Response(JSON.stringify({
-        error: 'Internal server error',
-        message: error.message
-      }), {
-        status: 500,
-        headers: responseHeaders
-      });
-    }
-  }
+const CORS_HEADERS = {
+    'Access-Control-Allow-Origin': 'https://nexusrank-pro.pages.dev',
+    'Access-Control-Allow-Methods': 'POST, OPTIONS',
+    'Access-Control-Allow-Headers': 'Content-Type',
 };
 
-// === AI Handler Functions (Outside class) ===
-
-async function callDeepSeek(messages, env) {
-  const apiKey = env.DEEPSEEK_API_KEY;
-  if (!apiKey) {
-    throw new Error('DeepSeek API key not configured');
-  }
-
-  const response = await fetch('https://api.deepseek.com/v1/chat/completions', {
-    method: 'POST',
-    headers: {
-      'Authorization': `Bearer ${apiKey}`,
-      'Content-Type': 'application/json',
-    },
-    body: JSON.stringify({
-      model: 'deepseek-chat',
-      messages: messages,
-      max_tokens: 4000,
-      temperature: 0.7,
-      stream: false,
-    }),
-  });
-
-  if (!response.ok) {
-    const errorText = await response.text();
-    throw new Error(`DeepSeek API error: ${response.status} ${errorText}`);
-  }
-
-  const data = await response.json();
-  return data.choices[0].message.content;
-}
-
-async function handleImprove(data, env) {
-  const messages = [
-    {
-      role: 'system',
-      content: 'Improve this text for clarity, grammar, and professionalism. Keep it under 500 words.'
-    },
-    {
-      role: 'user',
-      content: data.text
+class DeepSeekProvider {
+    constructor(apiKey) {
+        this.apiKey = apiKey;
+        this.baseUrl = 'https://api.deepseek.com/v1/chat/completions';
     }
-  ];
 
-  try {
-    const content = await callDeepSeek(messages, env);
-    return { content };
-  } catch (error) {
-    return {
-      content: `Improved: ${data.text}`
-    };
-  }
-}
+    async callAPI(messages, temperature = 0.7) {
+        const response = await fetch(this.baseUrl, {
+            method: 'POST',
+            headers: {
+                'Authorization': `Bearer ${this.apiKey}`,
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+                model: 'deepseek-chat',
+                messages: messages,
+                temperature: temperature,
+                max_tokens: 8000
+            }),
+        });
 
-async function handleSEOWrite(data, env) {
-  const length = data.length || 'long';
-  const wordCounts = {
-    'short': '500-1000 words',
-    'medium': '2000-5000 words',
-    'long': '5000-10000 words'
-  };
+        if (!response.ok) {
+            throw new Error(`DeepSeek API error: ${response.status}`);
+        }
 
-  const messages = [
-    {
-      role: 'system',
-      content: `Write a ${wordCounts[length]} SEO-optimized article. Use H2/H3 headings, bullet points, and natural keyword integration. Sound human.`
-    },
-    {
-      role: 'user',
-      content: data.prompt || data.text
+        const data = await response.json();
+        return data.choices[0].message.content;
     }
-  ];
 
-  try {
-    const content = await callDeepSeek(messages, env);
-    return { content };
-  } catch (error) {
-    return {
-      content: `# SEO Article: ${data.prompt || 'Topic'}\n\nThis article would be generated here with ${wordCounts[length]}.`
-    };
-  }
-}
-
-async function handleParaphrase(data, env) {
-  const style = data.style || 'standard';
-  const instructions = {
-    'standard': 'Rewrite naturally, keep meaning.',
-    'creative': 'Use creative language and expressions.',
-    'academic': 'Formal, scholarly tone.',
-    'simple': 'Simple language, easy to read.'
-  }[style] || 'Rewrite naturally.';
-
-  const messages = [
-    {
-      role: 'system',
-      content: `Paraphrase this text: ${instructions}. Avoid AI patterns.`
-    },
-    {
-      role: 'user',
-      content: data.text
+    async improveText(text) {
+        const prompt = "Enhance this text for clarity, fluency, and professionalism. Improve readability, fix awkward phrasing, and optimize for engagement — without changing the core message.";
+        
+        return await this.callAPI([
+            {
+                role: 'system',
+                content: prompt
+            },
+            {
+                role: 'user',
+                content: text
+            }
+        ], 0.6);
     }
-  ];
 
-  try {
-    const content = await callDeepSeek(messages, env);
-    return { content };
-  } catch (error) {
-    return { content: data.text };
-  }
-}
+    async generateSEOContent(prompt, length = 'long') {
+        const wordTarget = {
+            'short': '1000-2000',
+            'medium': '3000-5000', 
+            'long': '5000-10000'
+        }[length] || '5000-10000';
 
-async function handleHumanize(data, env) {
-  const messages = [
-    {
-      role: 'system',
-      content: 'Make this sound 100% human. Add contractions, minor imperfections, and natural flow.'
-    },
-    {
-      role: 'user',
-      content: data.text
+        const systemPrompt = "You are a top-tier SEO content writer with 10+ years of experience. Write a comprehensive, engaging, and highly readable article on the given topic. Use natural keyword integration, H2/H3 structure, bullet points, and real insights. Sound human — use contractions, varied sentences, and subtle opinions. Do not use AI patterns.";
+        
+        return await this.callAPI([
+            {
+                role: 'system',
+                content: systemPrompt
+            },
+            {
+                role: 'user',
+                content: `Write a ${wordTarget} word article about: ${prompt}`
+            }
+        ], 0.8);
     }
-  ];
 
-  try {
-    const content = await callDeepSeek(messages, env);
-    return { content };
-  } catch (error) {
-    return { content: data.text.replace(/\b(furthermore|moreover)\b/gi, 'also') };
-  }
-}
+    async paraphraseText(text, style = 'standard') {
+        const stylePrompts = {
+            'standard': 'Rewrite this text to be 100% unique and undetectable as AI. Use different sentence structures, synonyms, and natural flow. Keep the original meaning but make it sound fresh and human.',
+            'creative': 'Rewrite this text in a more creative, engaging, and dynamic style while maintaining the core message.',
+            'academic': 'Rewrite this text in formal academic language with proper scholarly tone and structure.',
+            'simple': 'Rewrite this text in simple, clear language that anyone can understand.'
+        };
 
-async function handleDetect(data, env) {
-  const messages = [
-    {
-      role: 'system',
-      content: 'Analyze if this text is AI-generated. Respond with: "AI Probability: X%" and brief reasoning.'
-    },
-    {
-      role: 'user',
-      content: data.text
+        return await this.callAPI([
+            {
+                role: 'system',
+                content: stylePrompts[style] || stylePrompts.standard
+            },
+            {
+                role: 'user',
+                content: text
+            }
+        ], 0.7);
     }
-  ];
 
-  try {
-    const analysis = await callDeepSeek(messages, env);
-    const match = analysis.match(/(\d+)%/);
-    const probability = match ? parseInt(match[1]) : 50;
-    const confidence = probability > 80 ? 'High' : probability > 60 ? 'Medium' : 'Low';
+    async humanizeText(text) {
+        const prompt = "Transform this AI-generated text to sound 100% human. Add minor imperfections, contractions, personal tone, and conversational flow. Avoid formal phrases like 'furthermore' or 'it is important to note'. Make it undetectable as AI.";
+        
+        return await this.callAPI([
+            {
+                role: 'system',
+                content: prompt
+            },
+            {
+                role: 'user',
+                content: text
+            }
+        ], 0.8);
+    }
 
-    return { probability, confidence, analysis };
-  } catch (error) {
-    return { probability: 60, confidence: 'Low', analysis: 'Unable to analyze' };
-  }
+    async detectAI(text) {
+        const prompt = "Analyze this text and estimate the probability it was AI-generated. Respond with: 'AI Probability: X%' and a 2-sentence explanation based on repetition, tone, structure, and language patterns.";
+        
+        return await this.callAPI([
+            {
+                role: 'system',
+                content: prompt
+            },
+            {
+                role: 'user',
+                content: text
+            }
+        ], 0.3);
+    }
+
+    async fixGrammar(text) {
+        const prompt = "Fix all grammar, spelling, punctuation, and style errors in this text. Return only the corrected version — no explanations.";
+        
+        return await this.callAPI([
+            {
+                role: 'system',
+                content: prompt
+            },
+            {
+                role: 'user',
+                content: text
+            }
+        ], 0.5);
+    }
 }
+
+export default {
+    async fetch(request, env) {
+        // Handle CORS preflight
+        if (request.method === 'OPTIONS') {
+            return new Response(null, {
+                headers: CORS_HEADERS
+            });
+        }
+
+        // Only allow POST requests
+        if (request.method !== 'POST') {
+            return new Response('Method not allowed', {
+                status: 405,
+                headers: CORS_HEADERS
+            });
+        }
+
+        try {
+            const url = new URL(request.url);
+            const path = url.pathname;
+            
+            if (!env.DEEPSEEK_API_KEY) {
+                throw new Error('DeepSeek API key not configured');
+            }
+
+            const deepSeek = new DeepSeekProvider(env.DEEPSEEK_API_KEY);
+            const body = await request.json();
+            let result;
+
+            switch (path) {
+                case '/ai/improve':
+                    result = await deepSeek.improveText(body.text);
+                    break;
+                
+                case '/ai/seo-write':
+                    result = await deepSeek.generateSEOContent(body.prompt, body.length);
+                    break;
+                
+                case '/ai/paraphrase':
+                    result = await deepSeek.paraphraseText(body.text, body.style);
+                    break;
+                
+                case '/ai/humanize':
+                    result = await deepSeek.humanizeText(body.text);
+                    break;
+                
+                case '/ai/detect':
+                    result = await deepSeek.detectAI(body.text);
+                    break;
+                
+                case '/ai/grammar':
+                    result = await deepSeek.fixGrammar(body.text);
+                    break;
+                
+                default:
+                    return new Response('Endpoint not found', {
+                        status: 404,
+                        headers: CORS_HEADERS
+                    });
+            }
+
+            return new Response(JSON.stringify({
+                success: true,
+                content: result
+            }), {
+                headers: {
+                    ...CORS_HEADERS,
+                    'Content-Type': 'application/json'
+                }
+            });
+
+        } catch (error) {
+            console.error('Worker error:', error);
+            return new Response(JSON.stringify({
+                success: false,
+                error: error.message
+            }), {
+                status: 500,
+                headers: {
+                    ...CORS_HEADERS,
+                    'Content-Type': 'application/json'
+                }
+            });
+        }
+    }
+};
