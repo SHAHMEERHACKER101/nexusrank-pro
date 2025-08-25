@@ -29,7 +29,7 @@ class NexusRankPro {
     };
 
     // Point to your deployed Worker
-    this.apiBaseUrl = 'https://nexusrank-ai.your-account.workers.dev';
+    this.apiBaseUrl = 'https://nexusrank-ai.shahshameer383.workers.dev/';
 
     this.init();
   }
