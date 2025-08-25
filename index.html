@@ -352,15 +352,22 @@
 
     <!-- Mobile Menu Script -->
     <script>
-        document.getElementById('mobileToggle').addEventListener('click', () => {
-            document.querySelector('.nav-mobile').classList.toggle('active');
-        });
+        document.addEventListener('DOMContentLoaded', () => {
+            const mobileToggle = document.getElementById('mobileToggle');
+            const navMobile = document.querySelector('.nav-mobile');
 
-        // Close mobile menu when clicking a link
-        document.querySelectorAll('.nav-mobile .nav-link').forEach(link => {
-            link.addEventListener('click', () => {
-                document.querySelector('.nav-mobile').classList.remove('active');
-            });
+            if (mobileToggle && navMobile) {
+                mobileToggle.addEventListener('click', () => {
+                    navMobile.classList.toggle('active');
+                });
+
+                // Close mobile menu when clicking a link
+                document.querySelectorAll('.nav-mobile .nav-link').forEach(link => {
+                    link.addEventListener('click', () => {
+                        navMobile.classList.remove('active');
+                    });
+                });
+            }
         });
     </script>
 
