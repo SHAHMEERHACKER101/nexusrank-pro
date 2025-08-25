@@ -4,27 +4,38 @@
  */
 
 // CORS headers for frontend access
-const corsHeaders = {
-  'Access-Control-Allow-Origin': 'https://nexusrank-pro.pages.dev',
-  'Access-Control-Allow-Methods': 'GET, POST, OPTIONS',
-  'Access-Control-Allow-Headers': 'Content-Type, Authorization',
-  'Access-Control-Max-Age': '86400',
-};
+function getCorsHeaders(request) {
+  const origin = request.headers.get('Origin');
+  const allowedOrigins = [
+    'https://nexusrank-pro.pages.dev',
+    'http://localhost:5000',
+    'http://127.0.0.1:5000'
+  ];
+  
+  return {
+    'Access-Control-Allow-Origin': allowedOrigins.includes(origin) ? origin : 'https://nexusrank-pro.pages.dev',
+    'Access-Control-Allow-Methods': 'GET, POST, OPTIONS',
+    'Access-Control-Allow-Headers': 'Content-Type, Authorization',
+    'Access-Control-Max-Age': '86400',
+  };
+}
 
 // DeepSeek API configuration
 const DEEPSEEK_API_URL = 'https://api.deepseek.com/v1/chat/completions';
 
 /**
- * Main request handler
+ * Main request handler - Module Worker Format
  */
-addEventListener('fetch', event => {
-  event.respondWith(handleRequest(event.request));
-});
+export default {
+  async fetch(request, env, ctx) {
+    return handleRequest(request, env);
+  }
+};
 
 /**
  * Handle incoming requests
  */
-async function handleRequest(request) {
+async function handleRequest(request, env) {
   const url = new URL(request.url);
   const path = url.pathname;
 
@@ -32,7 +43,7 @@ async function handleRequest(request) {
   if (request.method === 'OPTIONS') {
     return new Response(null, {
       status: 200,
-      headers: corsHeaders,
+      headers: getCorsHeaders(request),
     });
   }
 
@@ -45,7 +56,7 @@ async function handleRequest(request) {
     }), {
       status: 200,
       headers: {
-        ...corsHeaders,
+        ...getCorsHeaders(request),
         'Content-Type': 'application/json',
       },
     });
@@ -62,7 +73,7 @@ async function handleRequest(request) {
   };
 
   if (aiEndpoints[path] && request.method === 'POST') {
-    return await handleAIRequest(request, aiEndpoints[path]);
+    return await handleAIRequest(request, aiEndpoints[path], env);
   }
 
   // Handle 404 for unknown routes
@@ -72,7 +83,7 @@ async function handleRequest(request) {
   }), {
     status: 404,
     headers: {
-      ...corsHeaders,
+      ...getCorsHeaders(request),
       'Content-Type': 'application/json',
     },
   });
@@ -81,7 +92,7 @@ async function handleRequest(request) {
 /**
  * Handle AI processing requests
  */
-async function handleAIRequest(request, tool) {
+async function handleAIRequest(request, tool, env) {
   try {
     // Parse request body
     const body = await request.json();
@@ -89,18 +100,18 @@ async function handleAIRequest(request, tool) {
 
     // Validate input
     if (!text || typeof text !== 'string' || text.trim().length === 0) {
-      return createErrorResponse('Text input is required and cannot be empty', 400);
+      return createErrorResponse(request, 'Text input is required and cannot be empty', 400);
     }
 
     if (!prompt || typeof prompt !== 'string') {
-      return createErrorResponse('Prompt is required', 400);
+      return createErrorResponse(request, 'Prompt is required', 400);
     }
 
     // Get API key from environment
-    const apiKey = DEEPSEEK_API_KEY;
+    const apiKey = env.DEEPSEEK_API_KEY;
     if (!apiKey) {
       console.error('DEEPSEEK_API_KEY environment variable not set');
-      return createErrorResponse('AI service configuration error', 500);
+      return createErrorResponse(request, 'AI service configuration error', 500);
     }
 
     // Create the full prompt for DeepSeek
@@ -136,11 +147,11 @@ async function handleAIRequest(request, tool) {
       console.error('DeepSeek API error:', deepseekResponse.status, errorText);
       
       if (deepseekResponse.status === 401) {
-        return createErrorResponse('AI service authentication failed', 500);
+        return createErrorResponse(request, 'AI service authentication failed', 500);
       } else if (deepseekResponse.status === 429) {
-        return createErrorResponse('AI service rate limit exceeded. Please try again in a moment.', 429);
+        return createErrorResponse(request, 'AI service rate limit exceeded. Please try again in a moment.', 429);
       } else {
-        return createErrorResponse('AI service temporarily unavailable', 503);
+        return createErrorResponse(request, 'AI service temporarily unavailable', 503);
       }
     }
 
@@ -149,13 +160,13 @@ async function handleAIRequest(request, tool) {
     // Extract the AI response
     if (!deepseekData.choices || !deepseekData.choices[0] || !deepseekData.choices[0].message) {
       console.error('Unexpected DeepSeek response format:', deepseekData);
-      return createErrorResponse('Invalid response from AI service', 500);
+      return createErrorResponse(request, 'Invalid response from AI service', 500);
     }
 
     const aiResult = deepseekData.choices[0].message.content;
 
     if (!aiResult || aiResult.trim().length === 0) {
-      return createErrorResponse('AI service returned empty response', 500);
+      return createErrorResponse(request, 'AI service returned empty response', 500);
     }
 
     // Return successful response
@@ -168,14 +179,14 @@ async function handleAIRequest(request, tool) {
     }), {
       status: 200,
       headers: {
-        ...corsHeaders,
+        ...getCorsHeaders(request),
         'Content-Type': 'application/json',
       },
     });
 
   } catch (error) {
     console.error('Error processing AI request:', error);
-    return createErrorResponse('Internal server error occurred', 500);
+    return createErrorResponse(request, 'Internal server error occurred', 500);
   }
 }
 
@@ -214,7 +225,7 @@ function getTemperatureForTool(tool) {
 /**
  * Create standardized error response
  */
-function createErrorResponse(message, status = 400) {
+function createErrorResponse(request, message, status = 400) {
   return new Response(JSON.stringify({
     success: false,
     error: message,
@@ -222,7 +233,7 @@ function createErrorResponse(message, status = 400) {
   }), {
     status: status,
     headers: {
-      ...corsHeaders,
+      ...getCorsHeaders(request),
       'Content-Type': 'application/json',
     },
   });
