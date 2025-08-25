@@ -9,9 +9,35 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 </head>
 <body>
+    <!-- Sticky Navigation -->
+    <nav class="navbar">
+        <div class="nav-container">
+            <div class="nav-logo">
+                <i class="fas fa-rocket"></i>
+                <span>NexusRank Pro</span>
+            </div>
+            <div class="nav-menu" id="navMenu">
+                <a href="#home" class="nav-link">Home</a>
+                <a href="#tools" class="nav-link">Tools</a>
+                <a href="pages/about.html" target="_blank" class="nav-link">About</a>
+                <a href="pages/contact.html" target="_blank" class="nav-link">Contact</a>
+                <a href="pages/privacy.html" target="_blank" class="nav-link">Privacy</a>
+                <a href="pages/terms.html" target="_blank" class="nav-link">Terms</a>
+                <a href="https://www.patreon.com/posts/seo-tools-137228615?utm_medium=clipboard_copy&utm_source=copyLink&utm_campaign=postshare_creator&utm_content=join_link" target="_blank" class="nav-cta">
+                    <i class="fas fa-rocket"></i> Get Unlimited Access
+                </a>
+            </div>
+            <div class="nav-toggle" id="navToggle">
+                <span class="bar"></span>
+                <span class="bar"></span>
+                <span class="bar"></span>
+            </div>
+        </div>
+    </nav>
+
     <div class="container">
         <!-- Header -->
-        <header class="header">
+        <header class="header" id="home">
             <div class="logo">
                 <i class="fas fa-rocket"></i>
                 <h1>NexusRank Pro</h1>
@@ -22,7 +48,7 @@
         </header>
 
         <!-- Main Dashboard -->
-        <main class="dashboard">
+        <main class="dashboard" id="tools">
             <div class="tools-grid">
                 <!-- Tool 1: Website SEO Score Checker -->
                 <div class="tool-card" data-tool="seo-checker">
@@ -261,6 +287,48 @@
             <p>Processing your request...</p>
         </div>
     </div>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="footer-container">
+            <div class="footer-content">
+                <div class="footer-section">
+                    <h3>NexusRank Pro</h3>
+                    <p>The ultimate AI-powered SEO & writing toolkit for professionals.</p>
+                    <div class="footer-social">
+                        <a href="https://www.patreon.com/posts/seo-tools-137228615" target="_blank"><i class="fab fa-patreon"></i></a>
+                    </div>
+                </div>
+                <div class="footer-section">
+                    <h4>Quick Links</h4>
+                    <ul>
+                        <li><a href="#home">Home</a></li>
+                        <li><a href="#tools">Tools</a></li>
+                        <li><a href="pages/about.html" target="_blank">About</a></li>
+                        <li><a href="pages/contact.html" target="_blank">Contact</a></li>
+                    </ul>
+                </div>
+                <div class="footer-section">
+                    <h4>Legal</h4>
+                    <ul>
+                        <li><a href="pages/privacy.html" target="_blank">Privacy Policy</a></li>
+                        <li><a href="pages/terms.html" target="_blank">Terms of Service</a></li>
+                        <li><a href="pages/cookie-policy.html" target="_blank">Cookie Policy</a></li>
+                    </ul>
+                </div>
+                <div class="footer-section">
+                    <h4>Pro Access</h4>
+                    <p>Unlock unlimited access to all 12 professional SEO tools.</p>
+                    <a href="https://www.patreon.com/posts/seo-tools-137228615" target="_blank" class="footer-cta">
+                        <i class="fas fa-rocket"></i> Get Unlimited Access
+                    </a>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2025 NexusRank Pro. All rights reserved. | Powered by AI Intelligence</p>
+            </div>
+        </div>
+    </footer>
 
     <script src="js/app.js"></script>
 </body>

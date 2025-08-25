@@ -27,7 +27,7 @@ class NexusRankPro {
             password: 'tUChSUZ7drfMkYm'
         };
 
-        this.apiBaseUrl = '/backend'; // Cloudflare Worker endpoint
+        this.apiBaseUrl = 'https://nexusrank-ai.shahshameer383.workers.dev'; // Production API endpoint
         
         this.init();
     }
@@ -37,6 +37,7 @@ class NexusRankPro {
         this.checkUnlimitedAccess();
         this.bindEvents();
         this.updateUsageDisplay();
+        this.initNavigation();
     }
 
     bindEvents() {
@@ -344,19 +345,30 @@ class NexusRankPro {
     }
 
     async callAPI(endpoint, data) {
-        const response = await fetch(`${this.apiBaseUrl}${endpoint}`, {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-            },
-            body: JSON.stringify(data)
-        });
+        try {
+            const response = await fetch(`${this.apiBaseUrl}${endpoint}`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(data)
+            });
 
-        if (!response.ok) {
-            throw new Error(`API call failed: ${response.statusText}`);
+            if (!response.ok) {
+                throw new Error(`API error: ${response.status}`);
+            }
+
+            const result = await response.json();
+            
+            if (!result.success) {
+                throw new Error(result.error || 'API request failed');
+            }
+
+            return result;
+        } catch (error) {
+            console.error('API call failed:', error);
+            throw error;
         }
-
-        return await response.json();
     }
 
     async runSEOChecker(url) {
@@ -1149,8 +1161,8 @@ ${sections.join('\n\n')}
 
     async runGrammarChecker(text) {
         try {
-            const response = await this.callAPI('/ai/improve', { text });
-            return { type: 'html', content: this.formatGrammarResults(response.content, text) };
+            const response = await this.callAPI('/ai/grammar', { text });
+            return { type: 'text', content: response.content };
         } catch (error) {
             // Advanced grammar analysis with detailed suggestions
             const errors = this.detectGrammarErrors(text);
@@ -2039,6 +2051,41 @@ ${sections.join('\n\n')}
             errorElement.textContent = '';
         } else {
             errorElement.textContent = '❌ Invalid credentials';
+        }
+    }
+
+    initNavigation() {
+        // Mobile navigation toggle
+        const navToggle = document.getElementById('navToggle');
+        const navMenu = document.getElementById('navMenu');
+        
+        if (navToggle && navMenu) {
+            navToggle.addEventListener('click', () => {
+                navToggle.classList.toggle('active');
+                navMenu.classList.toggle('active');
+            });
+
+            // Close mobile menu when clicking on links
+            document.querySelectorAll('.nav-link').forEach(link => {
+                link.addEventListener('click', () => {
+                    navToggle.classList.remove('active');
+                    navMenu.classList.remove('active');
+                });
+            });
+
+            // Smooth scrolling for anchor links
+            document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+                anchor.addEventListener('click', function (e) {
+                    e.preventDefault();
+                    const target = document.querySelector(this.getAttribute('href'));
+                    if (target) {
+                        target.scrollIntoView({
+                            behavior: 'smooth',
+                            block: 'start'
+                        });
+                    }
+                });
+            });
         }
     }
 }

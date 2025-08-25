@@ -28,6 +28,143 @@ body {
     min-height: 100vh;
     overflow-x: hidden;
     line-height: 1.6;
+    padding-top: 80px;
+}
+
+/* Navigation Styles */
+.navbar {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    background: rgba(0, 0, 0, 0.95);
+    backdrop-filter: blur(10px);
+    border-bottom: 2px solid var(--neon-cyan);
+    z-index: 1000;
+    padding: 0.5rem 0;
+}
+
+.nav-container {
+    max-width: 1400px;
+    margin: 0 auto;
+    padding: 0 2rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.nav-logo {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-family: 'JetBrains Mono', monospace;
+    font-weight: 700;
+    font-size: 1.5rem;
+    color: var(--neon-cyan);
+}
+
+.nav-logo i {
+    font-size: 1.8rem;
+    animation: pulse 2s infinite;
+}
+
+.nav-menu {
+    display: flex;
+    align-items: center;
+    gap: 2rem;
+}
+
+.nav-link {
+    color: var(--text-secondary);
+    text-decoration: none;
+    font-weight: 500;
+    transition: var(--transition);
+    position: relative;
+}
+
+.nav-link:hover {
+    color: var(--neon-cyan);
+    text-shadow: 0 0 10px var(--neon-cyan);
+}
+
+.nav-cta {
+    background: linear-gradient(45deg, var(--neon-cyan), var(--electric-purple));
+    color: var(--primary-black);
+    padding: 0.8rem 1.5rem;
+    border-radius: 25px;
+    text-decoration: none;
+    font-weight: 600;
+    transition: var(--transition);
+    box-shadow: var(--shadow-glow);
+}
+
+.nav-cta:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 0 30px rgba(0, 255, 255, 0.5);
+}
+
+.nav-toggle {
+    display: none;
+    flex-direction: column;
+    cursor: pointer;
+    gap: 4px;
+}
+
+.bar {
+    width: 25px;
+    height: 3px;
+    background: var(--neon-cyan);
+    transition: var(--transition);
+}
+
+/* Mobile Navigation */
+@media (max-width: 768px) {
+    .nav-menu {
+        position: fixed;
+        top: 70px;
+        left: -100%;
+        width: 100%;
+        height: calc(100vh - 70px);
+        background: rgba(0, 0, 0, 0.98);
+        flex-direction: column;
+        justify-content: flex-start;
+        align-items: center;
+        gap: 2rem;
+        padding-top: 2rem;
+        transition: var(--transition);
+        border-top: 2px solid var(--neon-cyan);
+    }
+
+    .nav-menu.active {
+        left: 0;
+    }
+
+    .nav-toggle {
+        display: flex;
+    }
+
+    .nav-toggle.active .bar:nth-child(1) {
+        transform: rotate(-45deg) translate(-5px, 6px);
+    }
+
+    .nav-toggle.active .bar:nth-child(2) {
+        opacity: 0;
+    }
+
+    .nav-toggle.active .bar:nth-child(3) {
+        transform: rotate(45deg) translate(-5px, -6px);
+    }
+
+    .nav-link {
+        font-size: 1.2rem;
+        padding: 1rem;
+    }
+
+    .nav-cta {
+        margin-top: 1rem;
+        font-size: 1.1rem;
+        padding: 1rem 2rem;
+    }
 }
 
 /* Container */
@@ -792,4 +929,161 @@ body {
 .copy-btn:hover {
     background: var(--electric-purple);
     color: var(--primary-black);
+}
+
+/* Footer */
+.footer {
+    background: rgba(0, 0, 0, 0.95);
+    border-top: 2px solid var(--neon-cyan);
+    margin-top: 4rem;
+}
+
+.footer-container {
+    max-width: 1400px;
+    margin: 0 auto;
+    padding: 3rem 2rem 0;
+}
+
+.footer-content {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 2rem;
+    margin-bottom: 2rem;
+}
+
+.footer-section h3 {
+    font-family: 'JetBrains Mono', monospace;
+    color: var(--neon-cyan);
+    margin-bottom: 1rem;
+    font-size: 1.5rem;
+}
+
+.footer-section h4 {
+    color: var(--electric-purple);
+    margin-bottom: 1rem;
+    font-size: 1.1rem;
+}
+
+.footer-section p {
+    color: var(--text-secondary);
+    line-height: 1.6;
+    margin-bottom: 1rem;
+}
+
+.footer-section ul {
+    list-style: none;
+}
+
+.footer-section ul li {
+    margin-bottom: 0.5rem;
+}
+
+.footer-section ul li a {
+    color: var(--text-secondary);
+    text-decoration: none;
+    transition: var(--transition);
+}
+
+.footer-section ul li a:hover {
+    color: var(--neon-cyan);
+    text-shadow: 0 0 10px var(--neon-cyan);
+}
+
+.footer-social {
+    display: flex;
+    gap: 1rem;
+    margin-top: 1rem;
+}
+
+.footer-social a {
+    color: var(--electric-purple);
+    font-size: 1.5rem;
+    transition: var(--transition);
+}
+
+.footer-social a:hover {
+    color: var(--neon-cyan);
+    text-shadow: 0 0 15px var(--neon-cyan);
+}
+
+.footer-cta {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    background: linear-gradient(45deg, var(--neon-cyan), var(--electric-purple));
+    color: var(--primary-black);
+    padding: 0.8rem 1.5rem;
+    border-radius: 25px;
+    text-decoration: none;
+    font-weight: 600;
+    transition: var(--transition);
+    box-shadow: var(--shadow-glow);
+    margin-top: 1rem;
+}
+
+.footer-cta:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 0 30px rgba(0, 255, 255, 0.5);
+}
+
+.footer-bottom {
+    text-align: center;
+    padding: 2rem 0;
+    border-top: 1px solid rgba(0, 255, 255, 0.2);
+    color: var(--text-muted);
+}
+
+/* Page content styling for legal pages */
+.page-header {
+    text-align: center;
+    margin-bottom: 3rem;
+    padding-bottom: 2rem;
+    border-bottom: 1px solid rgba(0, 255, 255, 0.3);
+}
+
+.page-header h1 {
+    color: var(--neon-cyan);
+    margin-bottom: 0.5rem;
+    font-family: 'JetBrains Mono', monospace;
+}
+
+.page-header p {
+    color: var(--text-secondary);
+    font-size: 0.9rem;
+}
+
+.content-section {
+    max-width: 800px;
+    margin: 0 auto;
+    line-height: 1.7;
+}
+
+.content-section h2 {
+    color: var(--electric-purple);
+    margin: 2rem 0 1rem;
+    font-family: 'JetBrains Mono', monospace;
+}
+
+.content-section h3 {
+    color: var(--neon-cyan);
+    margin: 1.5rem 0 0.8rem;
+}
+
+.content-section h4 {
+    color: var(--text-primary);
+    margin: 1rem 0 0.5rem;
+}
+
+.content-section ul {
+    margin: 1rem 0;
+    padding-left: 1.5rem;
+}
+
+.content-section li {
+    margin: 0.5rem 0;
+    color: var(--text-secondary);
+}
+
+.content-section strong {
+    color: var(--text-primary);
 }
