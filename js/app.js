@@ -287,4 +287,156 @@ class NexusRankApp {
       this.incrementUsage(this.currentTool);
 
     } catch (error) {
-      console.error
+      console.error('Processing error:', error);
+      this.showError(`Error: ${error.message}`);
+    } finally {
+      processBtn.disabled = false;
+      processBtn.innerHTML = '<i class="fas fa-cog"></i> Process';
+      loading.style.display = 'none';
+    }
+  }
+
+  async makeAPIRequest(endpoint, data) {
+    try {
+      const response = await fetch(`${this.apiBaseUrl}${endpoint}`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(data)
+      });
+
+      if (!response.ok) {
+        const errorText = await response.text();
+        throw new Error(`HTTP ${response.status}: ${errorText}`);
+      }
+
+      return await response.json();
+    } catch (error) {
+      console.error('API request failed:', error);
+      throw error;
+    }
+  }
+
+  showResult(result) {
+    const outputSection = document.getElementById('output-section');
+    const toolOutput = document.getElementById('tool-output');
+    toolOutput.innerHTML = this.formatOutput(result);
+    outputSection.style.display = 'block';
+    outputSection.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+  }
+
+  formatOutput(text) {
+    return text
+      .replace(/\n\n/g, '</p><p>')
+      .replace(/\n/g, '<br>')
+      .replace(/^/, '<p>')
+      .replace(/$/, '</p>')
+      .replace(/<p><\/p>/g, '')
+      .replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>')
+      .replace(/\*(.*?)\*/g, '<em>$1</em>');
+  }
+
+  showError(message) {
+    const outputSection = document.getElementById('output-section');
+    const toolOutput = document.getElementById('tool-output');
+    toolOutput.innerHTML = `<div class="error"><i class="fas fa-exclamation-triangle"></i> ${message}</div>`;
+    outputSection.style.display = 'block';
+    outputSection.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+  }
+
+  async copyOutput() {
+    const toolOutput = document.getElementById('tool-output');
+    const text = toolOutput.textContent || toolOutput.innerText;
+
+    try {
+      await navigator.clipboard.writeText(text);
+      this.showTemporaryMessage('Copied to clipboard!', 'success');
+    } catch (error) {
+      const textArea = document.createElement('textarea');
+      textArea.value = text;
+      document.body.appendChild(textArea);
+      textArea.select();
+      document.execCommand('copy');
+      document.body.removeChild(textArea);
+      this.showTemporaryMessage('Copied (fallback)!', 'success');
+    }
+  }
+
+  downloadOutput() {
+    const toolOutput = document.getElementById('tool-output');
+    const text = toolOutput.textContent || toolOutput.innerText;
+    const tool = this.tools[this.currentTool];
+
+    if (!text.trim()) {
+      this.showTemporaryMessage('No content to download.', 'error');
+      return;
+    }
+
+    const blob = new Blob([text], { type: 'text/plain' });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = `${tool.name.toLowerCase().replace(/\s+/g, '-')}-output.txt`;
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+    URL.revokeObjectURL(url);
+    this.showTemporaryMessage('File downloaded!', 'success');
+  }
+
+  showTemporaryMessage(message, type = 'success') {
+    const el = document.createElement('div');
+    el.className = `temp-message ${type}`;
+    el.innerHTML = `<i class="fas fa-${type === 'success' ? 'check' : 'exclamation-triangle'}"></i> ${message}`;
+    el.style.cssText = `
+      position: fixed; top: 80px; right: 20px; background: ${type === 'success' ? '#00cc00' : '#ff4444'};
+      color: white; padding: 1rem 1.5rem; border-radius: 8px; box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+      z-index: 3000; animation: slideInRight 0.3s ease;
+    `;
+    document.body.appendChild(el);
+    setTimeout(() => {
+      el.style.animation = 'slideOutRight 0.3s ease';
+      setTimeout(() => el.remove(), 300);
+    }, 3000);
+  }
+
+  showProLogin() {
+    document.getElementById('pro-modal').classList.add('show');
+    setTimeout(() => document.getElementById('pro-username').focus(), 100);
+  }
+
+  closeProLogin() {
+    document.getElementById('pro-modal').classList.remove('show');
+    document.getElementById('pro-login-form').reset();
+  }
+
+  handleProLogin() {
+    const username = document.getElementById('pro-username').value.trim();
+    const password = document.getElementById('pro-password').value.trim();
+
+    if (username === 'prouser606' && password === 'tUChSUZ7drfMkYm') {
+      this.isProUser = true;
+      localStorage.setItem('nexusrank_pro', 'true');
+      this.updateUsageDisplay();
+      this.closeProLogin();
+      this.showTemporaryMessage('Welcome, Pro user!', 'success');
+    } else {
+      this.showTemporaryMessage('Invalid credentials.', 'error');
+    }
+  }
+}
+
+// Add animations
+const style = document.createElement('style');
+style.textContent = `
+  @keyframes slideInRight { from { transform: translateX(100%); opacity: 0; } to { transform: translateX(0); opacity: 1; } }
+  @keyframes slideOutRight { from { transform: translateX(0); opacity: 1; } to { transform: translateX(100%); opacity: 0; } }
+`;
+document.head.appendChild(style);
+
+// Export
+window.NexusRankApp = NexusRankApp;
+
+// Initialize
+document.addEventListener('DOMContentLoaded', () => {
+  new NexusRankApp();
+});
