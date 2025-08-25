@@ -1,70 +1,55 @@
-# NexusRank Pro - Production Deployment
+# NexusRank Pro - AI SEO Toolkit
 
-## Frontend URLs
-- **Production**: `https://nexusrank-pro.pages.dev`
-- **Backend Worker**: `https://nexusrank-ai.shahshameer383.workers.dev`
+Professional AI-powered SEO toolkit with 6 advanced tools for content creators, marketers, and businesses. Built with real DeepSeek AI integration for superior content generation and optimization.
 
-## Deployment Instructions
+![NexusRank Pro](https://img.shields.io/badge/NexusRank-Pro-blue?style=for-the-badge&logo=rocket)
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
+[![Cloudflare Pages](https://img.shields.io/badge/Deployed%20on-Cloudflare%20Pages-orange?style=flat&logo=cloudflare)](https://nexusrank-pro.pages.dev)
 
-### 1. Frontend Deployment (Cloudflare Pages)
-1. Push this entire folder to your GitHub repository
-2. Connect repository to Cloudflare Pages
-3. Deploy automatically from main branch
+## 🚀 Live Demo
 
-### 2. Backend Deployment (Cloudflare Workers)
-```bash
-cd backend
-wrangler publish
-```
+- **Frontend**: [https://nexusrank-pro.pages.dev](https://nexusrank-pro.pages.dev)
+- **Backend API**: [https://nexusrank-ai.shahshameer383.workers.dev](https://nexusrank-ai.shahshameer383.workers.dev)
 
-### 3. Environment Variables
-Set in Cloudflare Workers dashboard:
-- `DEEPSEEK_API_KEY`: Your DeepSeek API key
+## 🧠 AI-Powered Tools
 
-## Features
-- ✅ 12 Advanced SEO & Writing Tools  
-- ✅ Real DeepSeek AI Integration
-- ✅ Free Usage Tracking (2 uses per tool)
-- ✅ Pro Login System (prouser606/tUChSUZ7drfMkYm)
-- ✅ Google AdSense Ready
-- ✅ Complete Legal Pages
-- ✅ Mobile Responsive Navigation
-- ✅ Cyberpunk Gaming Design
+### 1. **AI SEO Writer**
+Generate comprehensive 5000-10000 word articles with natural keyword integration, proper H2/H3 structure, and human-like tone.
 
-## Pro Credentials
-- Username: `prouser606`
-- Password: `tUChSUZ7drfMkYm`
+### 2. **AI Humanizer** 
+Transform AI-generated text to sound 100% human with contractions, natural flow, and undetectable patterns.
 
-## File Structure
-```
-nexusrank-pro/
-├── index.html          # Main application
-├── css/style.css       # Cyberpunk styling
-├── js/app.js          # Core functionality
-├── sw.js              # Service worker
-├── backend/           # Cloudflare Worker
-│   ├── worker.js     # API proxy
-│   └── wrangler.jsonc # Deploy config
-└── pages/            # Legal pages
-    ├── privacy.html
-    ├── terms.html
-    ├── about.html
-    ├── contact.html
-    └── cookie-policy.html
-```
+### 3. **AI Detector**
+Analyze text and estimate AI probability with detailed explanations and confidence scores.
 
-## AI Tools Available
-1. Website SEO Score Checker
-2. Keyword Suggestion Tool
-3. AI SEO Writer (10K+ words)
-4. Paraphrasing Tool
-5. AI Detector
-6. AI Humanizer
-7. Grammar Checker
-8. Plagiarism Checker
-9. Reverse Image Search
-10. Logo Maker
-11. Emojis Picker
-12. Citation Generator
+### 4. **Paraphrasing Tool**
+Rewrite content to be 100% unique while preserving meaning and improving readability.
 
-All tools use real DeepSeek API for professional-grade results.
+### 5. **Grammar Checker**
+Fix all grammar, spelling, and punctuation errors for perfect professional content.
+
+### 6. **Text Improver**
+Enhance clarity, fluency, and professionalism while maintaining core message integrity.
+
+## 🛠️ Technology Stack
+
+### Frontend
+- **HTML5/CSS3/JavaScript** - Modern vanilla web technologies
+- **Responsive Design** - Mobile-first approach with hamburger navigation
+- **Font Awesome 6** - Professional iconography
+- **JetBrains Mono** - Code-friendly typography
+- **Service Worker** - PWA capabilities and offline functionality
+
+### Backend
+- **Cloudflare Workers** - Serverless edge computing
+- **DeepSeek AI** - Advanced language model integration
+- **CORS Support** - Secure cross-origin requests
+- **Error Handling** - Comprehensive error management
+
+### Deployment
+- **Cloudflare Pages** - Frontend hosting with global CDN
+- **Cloudflare Workers** - Backend API with worldwide distribution
+- **GitHub Integration** - Automated deployments
+
+## 📁 Project Structure
+

@@ -3,265 +3,341 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>NexusRank Pro - The Ultimate SEO Intelligence Platform</title>
-    <link rel="stylesheet" href="css/style.css">
-    <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;600;700&family=Segoe+UI:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <title>NexusRank Pro - AI SEO Toolkit</title>
+    <meta name="description" content="Professional AI-powered SEO toolkit with content writing, humanizing, detection, paraphrasing, grammar checking, and text improvement tools.">
+    
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+    
+    <!-- Font Awesome 6 -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="css/style.css">
+    
+    <!-- PWA Manifest -->
+    <link rel="manifest" href="manifest.json">
+    <meta name="theme-color" content="#2563eb">
 </head>
 <body>
-    <div class="container">
-        <!-- Header -->
-        <header class="header">
-            <div class="logo">
+    <!-- Sticky Navigation -->
+    <nav class="navbar" id="navbar">
+        <div class="nav-container">
+            <div class="nav-brand">
                 <i class="fas fa-rocket"></i>
-                <h1>NexusRank Pro</h1>
+                <span>NexusRank Pro</span>
             </div>
-            <div class="tagline">
-                <p>The future of SEO intelligence — fast, powerful, intuitive.</p>
+            
+            <div class="nav-menu" id="nav-menu">
+                <a href="#" class="nav-link active">Home</a>
+                <a href="#tools" class="nav-link">Tools</a>
+                <a href="pages/about.html" class="nav-link">About</a>
+                <a href="pages/contact.html" class="nav-link">Contact</a>
+                <a href="pages/privacy.html" class="nav-link">Privacy</a>
+                <a href="pages/terms.html" class="nav-link">Terms</a>
             </div>
-        </header>
+            
+            <div class="nav-actions">
+                <button class="btn-cta" onclick="window.open('https://patreon.com/nexusrankpro', '_blank')">
+                    🚀 Get Unlimited Access
+                </button>
+                <div class="hamburger" id="hamburger">
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                </div>
+            </div>
+        </div>
+    </nav>
 
-        <!-- Main Dashboard -->
-        <main class="dashboard">
+    <!-- Hero Section -->
+    <section class="hero">
+        <div class="container">
+            <div class="hero-content">
+                <h1>Professional AI SEO Toolkit</h1>
+                <p>Boost your content strategy with powerful AI-driven SEO tools. Create, optimize, and enhance your content like never before.</p>
+                <div class="hero-stats">
+                    <div class="stat">
+                        <span class="stat-number">6</span>
+                        <span class="stat-label">AI Tools</span>
+                    </div>
+                    <div class="stat">
+                        <span class="stat-number">10K+</span>
+                        <span class="stat-label">Words Generated</span>
+                    </div>
+                    <div class="stat">
+                        <span class="stat-number">99%</span>
+                        <span class="stat-label">Accuracy</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Tools Section -->
+    <section class="tools-section" id="tools">
+        <div class="container">
+            <h2>AI-Powered SEO Tools</h2>
+            <p class="section-subtitle">Choose from our comprehensive suite of AI tools to enhance your content strategy</p>
+            
             <div class="tools-grid">
-                <!-- Tool 1: Website SEO Score Checker -->
-                <div class="tool-card" data-tool="seo-checker">
+                <!-- AI SEO Writer -->
+                <div class="tool-card" data-tool="seo-writer">
                     <div class="tool-icon">
-                        <i class="fas fa-chart-line"></i>
-                    </div>
-                    <h3>Website SEO Score Checker</h3>
-                    <p>Analyze your website's SEO performance with detailed insights</p>
-                    <div class="tool-stats">
-                        <span class="stat">📊 Comprehensive Analysis</span>
-                    </div>
-                </div>
-
-                <!-- Tool 2: Keyword Suggestion Tool -->
-                <div class="tool-card" data-tool="keyword-tool">
-                    <div class="tool-icon">
-                        <i class="fas fa-search"></i>
-                    </div>
-                    <h3>Keyword Suggestion Tool</h3>
-                    <p>Discover high-impact keywords for your content strategy</p>
-                    <div class="tool-stats">
-                        <span class="stat">🔍 Smart Suggestions</span>
-                    </div>
-                </div>
-
-                <!-- Tool 3: AI SEO Writer -->
-                <div class="tool-card" data-tool="ai-writer">
-                    <div class="tool-icon">
-                        <i class="fas fa-pen-fancy"></i>
+                        <i class="fas fa-pen-nib"></i>
                     </div>
                     <h3>AI SEO Writer</h3>
-                    <p>Generate 10K-word SEO-optimized articles instantly</p>
-                    <div class="tool-stats">
-                        <span class="stat">✍️ Long-form Content</span>
+                    <p>Generate comprehensive, SEO-optimized articles with natural keyword integration and human-like tone.</p>
+                    <div class="tool-features">
+                        <span class="feature">5000-10000 words</span>
+                        <span class="feature">SEO optimized</span>
+                        <span class="feature">Human-like</span>
                     </div>
+                    <button class="tool-btn" onclick="app.openTool('seo-writer')">
+                        <i class="fas fa-rocket"></i> Use Tool
+                    </button>
                 </div>
 
-                <!-- Tool 4: Paraphrasing Tool -->
-                <div class="tool-card" data-tool="paraphraser">
-                    <div class="tool-icon">
-                        <i class="fas fa-sync-alt"></i>
-                    </div>
-                    <h3>Paraphrasing Tool</h3>
-                    <p>Rewrite content while maintaining original meaning</p>
-                    <div class="tool-stats">
-                        <span class="stat">🔄 Natural Rewrites</span>
-                    </div>
-                </div>
-
-                <!-- Tool 5: AI Detector -->
-                <div class="tool-card" data-tool="ai-detector">
-                    <div class="tool-icon">
-                        <i class="fas fa-robot"></i>
-                    </div>
-                    <h3>AI Detector</h3>
-                    <p>Detect AI-generated content with advanced algorithms</p>
-                    <div class="tool-stats">
-                        <span class="stat">🤖 99% Accuracy</span>
-                    </div>
-                </div>
-
-                <!-- Tool 6: AI Humanizer -->
-                <div class="tool-card" data-tool="ai-humanizer">
+                <!-- AI Humanizer -->
+                <div class="tool-card" data-tool="humanizer">
                     <div class="tool-icon">
                         <i class="fas fa-user-edit"></i>
                     </div>
                     <h3>AI Humanizer</h3>
-                    <p>Transform AI text to sound naturally human</p>
-                    <div class="tool-stats">
-                        <span class="stat">🧠 Human-like Output</span>
+                    <p>Transform AI-generated text to sound 100% human with natural flow and undetectable patterns.</p>
+                    <div class="tool-features">
+                        <span class="feature">100% Human</span>
+                        <span class="feature">Undetectable</span>
+                        <span class="feature">Natural Flow</span>
                     </div>
+                    <button class="tool-btn" onclick="app.openTool('humanizer')">
+                        <i class="fas fa-magic"></i> Use Tool
+                    </button>
                 </div>
 
-                <!-- Tool 7: Grammar Checker -->
-                <div class="tool-card" data-tool="grammar-checker">
+                <!-- AI Detector -->
+                <div class="tool-card" data-tool="detector">
+                    <div class="tool-icon">
+                        <i class="fas fa-search"></i>
+                    </div>
+                    <h3>AI Detector</h3>
+                    <p>Analyze text and estimate the probability it was generated by AI with detailed explanations.</p>
+                    <div class="tool-features">
+                        <span class="feature">Accurate Detection</span>
+                        <span class="feature">Probability Score</span>
+                        <span class="feature">Detailed Analysis</span>
+                    </div>
+                    <button class="tool-btn" onclick="app.openTool('detector')">
+                        <i class="fas fa-shield-alt"></i> Use Tool
+                    </button>
+                </div>
+
+                <!-- Paraphrasing Tool -->
+                <div class="tool-card" data-tool="paraphrase">
+                    <div class="tool-icon">
+                        <i class="fas fa-sync-alt"></i>
+                    </div>
+                    <h3>Paraphrasing Tool</h3>
+                    <p>Rewrite text to be 100% unique while preserving meaning and improving readability.</p>
+                    <div class="tool-features">
+                        <span class="feature">100% Unique</span>
+                        <span class="feature">Meaning Preserved</span>
+                        <span class="feature">Fresh Content</span>
+                    </div>
+                    <button class="tool-btn" onclick="app.openTool('paraphrase')">
+                        <i class="fas fa-recycle"></i> Use Tool
+                    </button>
+                </div>
+
+                <!-- Grammar Checker -->
+                <div class="tool-card" data-tool="grammar">
                     <div class="tool-icon">
                         <i class="fas fa-spell-check"></i>
                     </div>
-                    <h3>Free Grammar Checker</h3>
-                    <p>Fix grammar, spelling, and style errors instantly</p>
-                    <div class="tool-stats">
-                        <span class="stat">✅ Error-free Writing</span>
+                    <h3>Grammar Checker</h3>
+                    <p>Fix all grammar, spelling, and punctuation errors for perfect, professional content.</p>
+                    <div class="tool-features">
+                        <span class="feature">Error-Free</span>
+                        <span class="feature">Professional</span>
+                        <span class="feature">Instant Fix</span>
                     </div>
+                    <button class="tool-btn" onclick="app.openTool('grammar')">
+                        <i class="fas fa-check-circle"></i> Use Tool
+                    </button>
                 </div>
 
-                <!-- Tool 8: Plagiarism Checker -->
-                <div class="tool-card" data-tool="plagiarism-checker">
+                <!-- Text Improver -->
+                <div class="tool-card" data-tool="improve">
                     <div class="tool-icon">
-                        <i class="fas fa-shield-alt"></i>
+                        <i class="fas fa-arrow-up"></i>
                     </div>
-                    <h3>Plagiarism Checker</h3>
-                    <p>Ensure content originality with comprehensive scanning</p>
-                    <div class="tool-stats">
-                        <span class="stat">📄 Originality Verified</span>
+                    <h3>Text Improver</h3>
+                    <p>Enhance text for clarity, fluency, and professionalism while maintaining core message.</p>
+                    <div class="tool-features">
+                        <span class="feature">Enhanced Clarity</span>
+                        <span class="feature">Professional</span>
+                        <span class="feature">Engaging</span>
                     </div>
-                </div>
-
-                <!-- Tool 9: Reverse Image Search -->
-                <div class="tool-card" data-tool="image-search">
-                    <div class="tool-icon">
-                        <i class="fas fa-image"></i>
-                    </div>
-                    <h3>Reverse Image Search</h3>
-                    <p>Find image sources and similar images across the web</p>
-                    <div class="tool-stats">
-                        <span class="stat">🖼️ Visual Discovery</span>
-                    </div>
-                </div>
-
-                <!-- Tool 10: Logo Maker -->
-                <div class="tool-card" data-tool="logo-maker">
-                    <div class="tool-icon">
-                        <i class="fas fa-palette"></i>
-                    </div>
-                    <h3>Logo Maker</h3>
-                    <p>Create professional logos with AI-powered design</p>
-                    <div class="tool-stats">
-                        <span class="stat">🎨 Brand Identity</span>
-                    </div>
-                </div>
-
-                <!-- Tool 11: Emojis Picker -->
-                <div class="tool-card" data-tool="emoji-picker">
-                    <div class="tool-icon">
-                        <i class="fas fa-smile"></i>
-                    </div>
-                    <h3>Emojis Picker</h3>
-                    <p>Find and copy the perfect emojis for your content</p>
-                    <div class="tool-stats">
-                        <span class="stat">😊 Express Yourself</span>
-                    </div>
-                </div>
-
-                <!-- Tool 12: Citation Generator -->
-                <div class="tool-card" data-tool="citation-generator">
-                    <div class="tool-icon">
-                        <i class="fas fa-quote-right"></i>
-                    </div>
-                    <h3>Citation Generator</h3>
-                    <p>Generate citations in APA, MLA, and Chicago styles</p>
-                    <div class="tool-stats">
-                        <span class="stat">📚 Academic Ready</span>
-                    </div>
+                    <button class="tool-btn" onclick="app.openTool('improve')">
+                        <i class="fas fa-level-up-alt"></i> Use Tool
+                    </button>
                 </div>
             </div>
-        </main>
-    </div>
+        </div>
+    </section>
 
     <!-- Tool Modal -->
-    <div id="toolModal" class="modal">
+    <div class="modal" id="tool-modal">
         <div class="modal-content">
             <div class="modal-header">
-                <h2 id="modalTitle"></h2>
-                <button class="close-btn" id="closeModal">
+                <h3 id="modal-title">AI Tool</h3>
+                <button class="modal-close" onclick="app.closeTool()">
                     <i class="fas fa-times"></i>
                 </button>
             </div>
             <div class="modal-body">
-                <div class="input-section">
-                    <label for="toolInput" id="inputLabel">Enter your text:</label>
-                    <textarea id="toolInput" placeholder="Type or paste your content here..."></textarea>
-                    <div class="tool-options" id="toolOptions"></div>
-                </div>
-                <div class="action-section">
-                    <button id="runTool" class="run-btn">
-                        <i class="fas fa-play"></i>
-                        Run Analysis
-                    </button>
-                    <div class="usage-info">
-                        <span id="usageCount"></span>
+                <div class="tool-interface">
+                    <div class="usage-info" id="usage-info">
+                        <span class="usage-count">Free uses remaining: <span id="usage-count">2</span></span>
+                        <button class="btn-pro" onclick="app.showProLogin()">Go Pro</button>
                     </div>
-                </div>
-                <div class="output-section">
-                    <label for="toolOutput">Results:</label>
-                    <div id="toolOutput" class="output-area">
-                        <div class="placeholder">Results will appear here after analysis...</div>
+                    
+                    <div class="input-section">
+                        <label for="tool-input" id="input-label">Enter your text:</label>
+                        <textarea id="tool-input" placeholder="Paste your text here..." rows="8"></textarea>
+                        <div class="input-actions">
+                            <button class="btn-primary" onclick="app.processText()" id="process-btn">
+                                <i class="fas fa-cog"></i> Process
+                            </button>
+                            <button class="btn-secondary" onclick="app.clearInput()">
+                                <i class="fas fa-trash"></i> Clear
+                            </button>
+                        </div>
+                    </div>
+                    
+                    <div class="output-section" id="output-section" style="display: none;">
+                        <label>Result:</label>
+                        <div class="output-container">
+                            <div id="tool-output"></div>
+                            <div class="output-actions">
+                                <button class="btn-secondary" onclick="app.copyOutput()">
+                                    <i class="fas fa-copy"></i> Copy
+                                </button>
+                                <button class="btn-secondary" onclick="app.downloadOutput()">
+                                    <i class="fas fa-download"></i> Download
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="loading" id="loading" style="display: none;">
+                        <div class="spinner"></div>
+                        <p>Processing with AI...</p>
                     </div>
                 </div>
             </div>
         </div>
     </div>
 
-    <!-- Usage Limit Modal -->
-    <div id="limitModal" class="modal limit-modal">
-        <div class="modal-content limit-content">
-            <div class="limit-header">
-                <i class="fas fa-heart"></i>
-                <h2>❤️ Love this tool? Support us to keep using it now!</h2>
-            </div>
-            <div class="limit-body">
-                <p>You've reached your free usage limit for this tool. Choose an option below to continue:</p>
-                <div class="limit-buttons">
-                    <button id="proLoginBtn" class="pro-btn">
-                        <i class="fas fa-lock"></i>
-                        🔐 Pro Login
-                    </button>
-                    <button id="unlimitedBtn" class="unlimited-btn">
-                        <i class="fas fa-rocket"></i>
-                        🚀 Get Unlimited Access
-                    </button>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <!-- Login Modal -->
-    <div id="loginModal" class="modal">
-        <div class="modal-content login-content">
+    <!-- Pro Login Modal -->
+    <div class="modal" id="pro-modal">
+        <div class="modal-content small">
             <div class="modal-header">
-                <h2>Pro Login</h2>
-                <button class="close-btn" id="closeLogin">
+                <h3>Pro Login</h3>
+                <button class="modal-close" onclick="app.closeProLogin()">
                     <i class="fas fa-times"></i>
                 </button>
             </div>
             <div class="modal-body">
-                <form id="loginForm">
+                <form id="pro-login-form">
                     <div class="form-group">
-                        <label for="username">Username:</label>
-                        <input type="text" id="username" required>
+                        <label for="pro-username">Username:</label>
+                        <input type="text" id="pro-username" required>
                     </div>
                     <div class="form-group">
-                        <label for="password">Password:</label>
-                        <input type="password" id="password" required>
+                        <label for="pro-password">Password:</label>
+                        <input type="password" id="pro-password" required>
                     </div>
-                    <button type="submit" class="login-submit">Login</button>
-                    <div id="loginError" class="error-message"></div>
+                    <div class="form-actions">
+                        <button type="submit" class="btn-primary">
+                            <i class="fas fa-sign-in-alt"></i> Login
+                        </button>
+                    </div>
                 </form>
             </div>
         </div>
     </div>
 
-    <!-- Loading Overlay -->
-    <div id="loadingOverlay" class="loading-overlay">
-        <div class="loading-spinner">
-            <div class="spinner"></div>
-            <p>Processing your request...</p>
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-column">
+                    <div class="footer-brand">
+                        <i class="fas fa-rocket"></i>
+                        <span>NexusRank Pro</span>
+                    </div>
+                    <p>Professional AI-powered SEO toolkit for content creators, marketers, and businesses.</p>
+                    <div class="social-links">
+                        <a href="#" aria-label="Twitter"><i class="fab fa-twitter"></i></a>
+                        <a href="#" aria-label="LinkedIn"><i class="fab fa-linkedin"></i></a>
+                        <a href="#" aria-label="GitHub"><i class="fab fa-github"></i></a>
+                    </div>
+                </div>
+                
+                <div class="footer-column">
+                    <h4>Quick Links</h4>
+                    <ul>
+                        <li><a href="#">Home</a></li>
+                        <li><a href="#tools">Tools</a></li>
+                        <li><a href="pages/about.html">About</a></li>
+                        <li><a href="pages/contact.html">Contact</a></li>
+                    </ul>
+                </div>
+                
+                <div class="footer-column">
+                    <h4>Popular Tools</h4>
+                    <ul>
+                        <li><a href="#" onclick="app.openTool('seo-writer')">AI SEO Writer</a></li>
+                        <li><a href="#" onclick="app.openTool('humanizer')">AI Humanizer</a></li>
+                        <li><a href="#" onclick="app.openTool('detector')">AI Detector</a></li>
+                        <li><a href="#" onclick="app.openTool('paraphrase')">Paraphrasing Tool</a></li>
+                    </ul>
+                </div>
+                
+                <div class="footer-column">
+                    <h4>Legal</h4>
+                    <ul>
+                        <li><a href="pages/privacy.html">Privacy Policy</a></li>
+                        <li><a href="pages/terms.html">Terms of Service</a></li>
+                        <li><a href="pages/cookie-policy.html">Cookie Policy</a></li>
+                    </ul>
+                </div>
+            </div>
+            
+            <div class="footer-bottom">
+                <p>&copy; 2025 NexusRank Pro. All rights reserved.</p>
+            </div>
         </div>
-    </div>
+    </footer>
 
+    <!-- Scripts -->
     <script src="js/app.js"></script>
+    <script>
+        // Initialize service worker
+        if ('serviceWorker' in navigator) {
+            window.addEventListener('load', () => {
+                navigator.serviceWorker.register('/sw.js')
+                    .then(registration => console.log('SW registered'))
+                    .catch(error => console.log('SW registration failed'));
+            });
+        }
+        
+        // Initialize app
+        const app = new NexusRankApp();
+        app.init();
+    </script>
 </body>
 </html>

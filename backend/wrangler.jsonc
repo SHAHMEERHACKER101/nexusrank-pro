@@ -5,5 +5,20 @@
   "workers_dev": true,
   "build": {
     "command": ""
+  },
+  "vars": {
+    "DEBUG": false
+  },
+  "env": {
+    "production": {
+      "vars": {
+        "DEBUG": false
+      }
+    },
+    "staging": {
+      "vars": {
+        "DEBUG": true
+      }
+    }
   }
 }

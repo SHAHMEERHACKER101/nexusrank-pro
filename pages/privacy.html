@@ -4,79 +4,230 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Privacy Policy - NexusRank Pro</title>
-    <meta name="description" content="Privacy Policy for NexusRank Pro - AI-powered SEO & Writing Toolkit. We prioritize your privacy and data security.">
+    <meta name="description" content="Privacy policy for NexusRank Pro AI SEO toolkit. Learn how we protect your data and privacy.">
+    
+    <!-- Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;700&family=Segoe+UI:wght@400;600;700&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="../css/style.css">
+    <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+    
+    <!-- Font Awesome 6 -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="../css/style.css">
 </head>
 <body>
-    <div class="container">
-        <header class="header">
-            <div class="logo">
-                <a href="../index.html">
-                    <i class="fas fa-chart-line"></i>
-                    <span>NexusRank Pro</span>
-                </a>
+    <!-- Sticky Navigation -->
+    <nav class="navbar" id="navbar">
+        <div class="nav-container">
+            <div class="nav-brand">
+                <i class="fas fa-rocket"></i>
+                <span>NexusRank Pro</span>
             </div>
-            <nav class="nav">
-                <a href="../index.html" class="nav-link">
-                    <i class="fas fa-home"></i> Home
-                </a>
-            </nav>
-        </header>
-
-        <main class="main-content">
-            <div class="page-header">
-                <h1><i class="fas fa-shield-alt"></i> Privacy Policy</h1>
-                <p>Last updated: January 25, 2025</p>
+            
+            <div class="nav-menu" id="nav-menu">
+                <a href="../index.html" class="nav-link">Home</a>
+                <a href="../index.html#tools" class="nav-link">Tools</a>
+                <a href="about.html" class="nav-link">About</a>
+                <a href="contact.html" class="nav-link">Contact</a>
+                <a href="privacy.html" class="nav-link active">Privacy</a>
+                <a href="terms.html" class="nav-link">Terms</a>
             </div>
-
-            <div class="content-section">
-                <h2>🛡️ Your Privacy Matters</h2>
-                <p>At NexusRank Pro, we are committed to protecting your privacy and ensuring transparency about our data practices.</p>
-
-                <h3>📊 Data We Don't Collect</h3>
-                <ul>
-                    <li><strong>Personal Information:</strong> We do not collect names, emails, or personal data</li>
-                    <li><strong>Tracking:</strong> No third-party tracking or analytics</li>
-                    <li><strong>Cookies:</strong> No tracking cookies or persistent data storage</li>
-                    <li><strong>Content:</strong> Your text and content are not stored on our servers</li>
-                </ul>
-
-                <h3>💾 Local Storage Usage</h3>
-                <p>We only use browser localStorage for:</p>
-                <ul>
-                    <li>Tracking free usage limits (2 uses per tool)</li>
-                    <li>Remembering Pro login status during your session</li>
-                    <li>This data stays on your device and is never transmitted to our servers</li>
-                </ul>
-
-                <h3>🔒 Data Security</h3>
-                <p>Since we don't collect personal data, there's minimal risk to your privacy. Any text you process through our tools is handled client-side when possible, and server requests are not logged or stored.</p>
-
-                <h3>🤝 Third-Party Services</h3>
-                <p>We use AI services (DeepSeek) for content processing. Your content is sent to these services only during active tool usage and is not stored by us or our AI providers.</p>
-
-                <h3>📧 Contact</h3>
-                <p>For privacy concerns or questions, contact us at: <strong>shahshameer383@gmail.com</strong></p>
-
-                <h3>📝 Policy Updates</h3>
-                <p>We may update this policy occasionally. Changes will be posted on this page with an updated date.</p>
+            
+            <div class="nav-actions">
+                <button class="btn-cta" onclick="window.open('https://patreon.com/nexusrankpro', '_blank')">
+                    🚀 Get Unlimited Access
+                </button>
+                <div class="hamburger" id="hamburger">
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                </div>
             </div>
-        </main>
+        </div>
+    </nav>
 
-        <footer class="footer">
-            <div class="footer-links">
-                <a href="privacy.html">Privacy Policy</a> |
-                <a href="terms.html">Terms</a> |
-                <a href="about.html">About</a> |
-                <a href="contact.html">Contact</a> |
-                <a href="cookie-policy.html">Cookie Policy</a>
+    <!-- Main Content -->
+    <main style="margin-top: 64px; padding: 3rem 0;">
+        <div class="container">
+            <div style="max-width: 800px; margin: 0 auto;">
+                <h1 style="font-size: 2.5rem; font-weight: 700; margin-bottom: 1rem; color: var(--text-primary);">Privacy Policy</h1>
+                <p style="color: var(--text-secondary); margin-bottom: 2rem; font-size: 1.125rem;">Last updated: August 25, 2025</p>
+                
+                <div style="background: white; border-radius: var(--radius-lg); padding: 2rem; box-shadow: var(--shadow-sm); border: 1px solid var(--border-color);">
+                    <section style="margin-bottom: 2rem;">
+                        <h2 style="font-size: 1.5rem; font-weight: 600; margin-bottom: 1rem; color: var(--text-primary);">1. Information We Collect</h2>
+                        <p style="margin-bottom: 1rem; line-height: 1.6;">We collect minimal information to provide our AI SEO toolkit services:</p>
+                        <ul style="margin-left: 1.5rem; margin-bottom: 1rem;">
+                            <li style="margin-bottom: 0.5rem;">Text content you submit for processing</li>
+                            <li style="margin-bottom: 0.5rem;">Usage analytics and performance metrics</li>
+                            <li style="margin-bottom: 0.5rem;">Technical information like IP address and browser type</li>
+                            <li style="margin-bottom: 0.5rem;">Pro account credentials (if applicable)</li>
+                        </ul>
+                    </section>
+
+                    <section style="margin-bottom: 2rem;">
+                        <h2 style="font-size: 1.5rem; font-weight: 600; margin-bottom: 1rem; color: var(--text-primary);">2. How We Use Your Information</h2>
+                        <p style="margin-bottom: 1rem; line-height: 1.6;">Your information is used exclusively for:</p>
+                        <ul style="margin-left: 1.5rem; margin-bottom: 1rem;">
+                            <li style="margin-bottom: 0.5rem;">Processing your text through AI services</li>
+                            <li style="margin-bottom: 0.5rem;">Tracking usage limits for free users</li>
+                            <li style="margin-bottom: 0.5rem;">Improving our service quality and performance</li>
+                            <li style="margin-bottom: 0.5rem;">Providing customer support when needed</li>
+                        </ul>
+                    </section>
+
+                    <section style="margin-bottom: 2rem;">
+                        <h2 style="font-size: 1.5rem; font-weight: 600; margin-bottom: 1rem; color: var(--text-primary);">3. Data Storage and Security</h2>
+                        <p style="margin-bottom: 1rem; line-height: 1.6;">We implement industry-standard security measures:</p>
+                        <ul style="margin-left: 1.5rem; margin-bottom: 1rem;">
+                            <li style="margin-bottom: 0.5rem;">All data is transmitted using HTTPS encryption</li>
+                            <li style="margin-bottom: 0.5rem;">Text content is processed temporarily and not permanently stored</li>
+                            <li style="margin-bottom: 0.5rem;">Usage data is stored locally in your browser</li>
+                            <li style="margin-bottom: 0.5rem;">We use secure cloud infrastructure with enterprise-grade protection</li>
+                        </ul>
+                    </section>
+
+                    <section style="margin-bottom: 2rem;">
+                        <h2 style="font-size: 1.5rem; font-weight: 600; margin-bottom: 1rem; color: var(--text-primary);">4. Third-Party Services</h2>
+                        <p style="margin-bottom: 1rem; line-height: 1.6;">We use the following third-party services:</p>
+                        <ul style="margin-left: 1.5rem; margin-bottom: 1rem;">
+                            <li style="margin-bottom: 0.5rem;"><strong>DeepSeek AI:</strong> For processing your text content</li>
+                            <li style="margin-bottom: 0.5rem;"><strong>Cloudflare:</strong> For hosting and security services</li>
+                            <li style="margin-bottom: 0.5rem;"><strong>Patreon:</strong> For Pro subscription management</li>
+                        </ul>
+                        <p style="line-height: 1.6;">These services have their own privacy policies and data handling practices.</p>
+                    </section>
+
+                    <section style="margin-bottom: 2rem;">
+                        <h2 style="font-size: 1.5rem; font-weight: 600; margin-bottom: 1rem; color: var(--text-primary);">5. Cookies and Local Storage</h2>
+                        <p style="margin-bottom: 1rem; line-height: 1.6;">We use local browser storage to:</p>
+                        <ul style="margin-left: 1.5rem; margin-bottom: 1rem;">
+                            <li style="margin-bottom: 0.5rem;">Track your free usage limits</li>
+                            <li style="margin-bottom: 0.5rem;">Remember your Pro login status</li>
+                            <li style="margin-bottom: 0.5rem;">Improve your user experience</li>
+                        </ul>
+                        <p style="line-height: 1.6;">You can clear this data at any time through your browser settings.</p>
+                    </section>
+
+                    <section style="margin-bottom: 2rem;">
+                        <h2 style="font-size: 1.5rem; font-weight: 600; margin-bottom: 1rem; color: var(--text-primary);">6. Data Sharing</h2>
+                        <p style="line-height: 1.6;">We do not sell, trade, or share your personal information with third parties except:</p>
+                        <ul style="margin-left: 1.5rem; margin-bottom: 1rem;">
+                            <li style="margin-bottom: 0.5rem;">When required by law or legal process</li>
+                            <li style="margin-bottom: 0.5rem;">To protect our rights and prevent fraud</li>
+                            <li style="margin-bottom: 0.5rem;">With service providers who help us operate our platform</li>
+                        </ul>
+                    </section>
+
+                    <section style="margin-bottom: 2rem;">
+                        <h2 style="font-size: 1.5rem; font-weight: 600; margin-bottom: 1rem; color: var(--text-primary);">7. Your Rights</h2>
+                        <p style="margin-bottom: 1rem; line-height: 1.6;">You have the right to:</p>
+                        <ul style="margin-left: 1.5rem; margin-bottom: 1rem;">
+                            <li style="margin-bottom: 0.5rem;">Access and review your personal information</li>
+                            <li style="margin-bottom: 0.5rem;">Request deletion of your data</li>
+                            <li style="margin-bottom: 0.5rem;">Opt out of data collection</li>
+                            <li style="margin-bottom: 0.5rem;">Request data portability</li>
+                        </ul>
+                    </section>
+
+                    <section style="margin-bottom: 2rem;">
+                        <h2 style="font-size: 1.5rem; font-weight: 600; margin-bottom: 1rem; color: var(--text-primary);">8. Children's Privacy</h2>
+                        <p style="line-height: 1.6;">Our service is not intended for children under 13 years of age. We do not knowingly collect personal information from children under 13.</p>
+                    </section>
+
+                    <section style="margin-bottom: 2rem;">
+                        <h2 style="font-size: 1.5rem; font-weight: 600; margin-bottom: 1rem; color: var(--text-primary);">9. Changes to This Policy</h2>
+                        <p style="line-height: 1.6;">We may update this privacy policy from time to time. We will notify you of any changes by posting the new policy on this page with an updated "Last updated" date.</p>
+                    </section>
+
+                    <section>
+                        <h2 style="font-size: 1.5rem; font-weight: 600; margin-bottom: 1rem; color: var(--text-primary);">10. Contact Us</h2>
+                        <p style="line-height: 1.6;">If you have any questions about this privacy policy, please contact us at:</p>
+                        <ul style="margin-left: 1.5rem; margin-top: 1rem;">
+                            <li style="margin-bottom: 0.5rem;">Email: privacy@nexusrankpro.com</li>
+                            <li style="margin-bottom: 0.5rem;">Website: <a href="../pages/contact.html" style="color: var(--primary-color);">Contact Form</a></li>
+                        </ul>
+                    </section>
+                </div>
             </div>
-            <p>&copy; 2025 NexusRank Pro. Built for creators, by creators.</p>
-        </footer>
-    </div>
+        </div>
+    </main>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-column">
+                    <div class="footer-brand">
+                        <i class="fas fa-rocket"></i>
+                        <span>NexusRank Pro</span>
+                    </div>
+                    <p>Professional AI-powered SEO toolkit for content creators, marketers, and businesses.</p>
+                    <div class="social-links">
+                        <a href="#" aria-label="Twitter"><i class="fab fa-twitter"></i></a>
+                        <a href="#" aria-label="LinkedIn"><i class="fab fa-linkedin"></i></a>
+                        <a href="#" aria-label="GitHub"><i class="fab fa-github"></i></a>
+                    </div>
+                </div>
+                
+                <div class="footer-column">
+                    <h4>Quick Links</h4>
+                    <ul>
+                        <li><a href="../index.html">Home</a></li>
+                        <li><a href="../index.html#tools">Tools</a></li>
+                        <li><a href="about.html">About</a></li>
+                        <li><a href="contact.html">Contact</a></li>
+                    </ul>
+                </div>
+                
+                <div class="footer-column">
+                    <h4>Popular Tools</h4>
+                    <ul>
+                        <li><a href="../index.html#tools">AI SEO Writer</a></li>
+                        <li><a href="../index.html#tools">AI Humanizer</a></li>
+                        <li><a href="../index.html#tools">AI Detector</a></li>
+                        <li><a href="../index.html#tools">Paraphrasing Tool</a></li>
+                    </ul>
+                </div>
+                
+                <div class="footer-column">
+                    <h4>Legal</h4>
+                    <ul>
+                        <li><a href="privacy.html">Privacy Policy</a></li>
+                        <li><a href="terms.html">Terms of Service</a></li>
+                        <li><a href="cookie-policy.html">Cookie Policy</a></li>
+                    </ul>
+                </div>
+            </div>
+            
+            <div class="footer-bottom">
+                <p>&copy; 2025 NexusRank Pro. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Scripts -->
+    <script>
+        // Mobile hamburger menu
+        const hamburger = document.getElementById('hamburger');
+        const navMenu = document.getElementById('nav-menu');
+        
+        if (hamburger && navMenu) {
+            hamburger.addEventListener('click', () => {
+                hamburger.classList.toggle('active');
+                navMenu.classList.toggle('active');
+            });
+        }
+
+        // Close mobile menu when clicking nav links
+        document.querySelectorAll('.nav-link').forEach(link => {
+            link.addEventListener('click', () => {
+                hamburger?.classList.remove('active');
+                navMenu?.classList.remove('active');
+            });
+        });
+    </script>
 </body>
 </html>

@@ -4,143 +4,298 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Cookie Policy - NexusRank Pro</title>
-    <meta name="description" content="Cookie Policy for NexusRank Pro - Learn about our minimal use of cookies and local storage for essential functionality.">
+    <meta name="description" content="Cookie policy for NexusRank Pro. Learn about how we use cookies and local storage to enhance your experience.">
+    
+    <!-- Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;700&family=Segoe+UI:wght@400;600;700&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="../css/style.css">
+    <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+    
+    <!-- Font Awesome 6 -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="../css/style.css">
 </head>
 <body>
-    <div class="container">
-        <header class="header">
-            <div class="logo">
-                <a href="../index.html">
-                    <i class="fas fa-chart-line"></i>
-                    <span>NexusRank Pro</span>
-                </a>
+    <!-- Sticky Navigation -->
+    <nav class="navbar" id="navbar">
+        <div class="nav-container">
+            <div class="nav-brand">
+                <i class="fas fa-rocket"></i>
+                <span>NexusRank Pro</span>
             </div>
-            <nav class="nav">
-                <a href="../index.html" class="nav-link">
-                    <i class="fas fa-home"></i> Home
-                </a>
-            </nav>
-        </header>
-
-        <main class="main-content">
-            <div class="page-header">
-                <h1><i class="fas fa-cookie-bite"></i> Cookie Policy</h1>
-                <p>Last updated: January 25, 2025</p>
+            
+            <div class="nav-menu" id="nav-menu">
+                <a href="../index.html" class="nav-link">Home</a>
+                <a href="../index.html#tools" class="nav-link">Tools</a>
+                <a href="about.html" class="nav-link">About</a>
+                <a href="contact.html" class="nav-link">Contact</a>
+                <a href="privacy.html" class="nav-link">Privacy</a>
+                <a href="terms.html" class="nav-link">Terms</a>
             </div>
-
-            <div class="content-section">
-                <h2>🍪 Our Approach to Cookies</h2>
-                <p>At NexusRank Pro, we believe in minimal data collection and maximum privacy. This policy explains our limited use of browser storage technologies.</p>
-
-                <h3>📱 What We Use: Local Storage (Not Cookies)</h3>
-                <p>We primarily use HTML5 localStorage instead of traditional cookies. This means:</p>
-                <ul>
-                    <li><strong>Local Only:</strong> Data stays on your device and is never sent to servers</li>
-                    <li><strong>No Tracking:</strong> No cross-site tracking or advertising cookies</li>
-                    <li><strong>Essential Function:</strong> Only used for core app functionality</li>
-                    <li><strong>User Control:</strong> You can clear this data anytime</li>
-                </ul>
-
-                <h3>💾 What We Store Locally</h3>
-                <div class="storage-info" style="background: rgba(0, 255, 255, 0.1); border: 1px solid rgba(0, 255, 255, 0.3); border-radius: 10px; padding: 1.5rem; margin: 1.5rem 0;">
-                    <h4>Free Usage Tracking</h4>
-                    <ul>
-                        <li><strong>Purpose:</strong> Track your 2 free uses per tool</li>
-                        <li><strong>Data:</strong> Simple counters (e.g., "seo_checker_uses: 1")</li>
-                        <li><strong>Duration:</strong> Persists until you clear browser data</li>
-                        <li><strong>Privacy:</strong> No personal information, just usage counts</li>
-                    </ul>
+            
+            <div class="nav-actions">
+                <button class="btn-cta" onclick="window.open('https://patreon.com/nexusrankpro', '_blank')">
+                    🚀 Get Unlimited Access
+                </button>
+                <div class="hamburger" id="hamburger">
+                    <span></span>
+                    <span></span>
+                    <span></span>
                 </div>
+            </div>
+        </div>
+    </nav>
 
-                <div class="storage-info" style="background: rgba(185, 103, 255, 0.1); border: 1px solid rgba(185, 103, 255, 0.3); border-radius: 10px; padding: 1.5rem; margin: 1.5rem 0;">
-                    <h4>Pro Login Status</h4>
-                    <ul>
-                        <li><strong>Purpose:</strong> Remember if you're logged into Pro access</li>
-                        <li><strong>Data:</strong> Boolean flag (e.g., "unlimitedAccess: true")</li>
-                        <li><strong>Duration:</strong> Until you log out or clear browser data</li>
-                        <li><strong>Security:</strong> No password or sensitive data stored</li>
-                    </ul>
-                </div>
-
-                <h3>🚫 What We DON'T Use</h3>
-                <ul>
-                    <li><strong>Advertising Cookies:</strong> No ads means no ad tracking</li>
-                    <li><strong>Analytics Cookies:</strong> We don't track your behavior</li>
-                    <li><strong>Social Media Cookies:</strong> No social platform integrations</li>
-                    <li><strong>Third-Party Cookies:</strong> No external tracking scripts</li>
-                    <li><strong>Session Cookies:</strong> No server-side session management</li>
-                </ul>
-
-                <h3>🔧 Managing Your Data</h3>
-                <p>You have complete control over your local storage data:</p>
+    <!-- Main Content -->
+    <main style="margin-top: 64px; padding: 3rem 0;">
+        <div class="container">
+            <div style="max-width: 800px; margin: 0 auto;">
+                <h1 style="font-size: 2.5rem; font-weight: 700; margin-bottom: 1rem; color: var(--text-primary);">Cookie Policy</h1>
+                <p style="color: var(--text-secondary); margin-bottom: 2rem; font-size: 1.125rem;">Last updated: August 25, 2025</p>
                 
-                <h4>To Clear Usage Data:</h4>
-                <ol>
-                    <li>Open your browser's developer tools (F12)</li>
-                    <li>Go to Application/Storage tab</li>
-                    <li>Find "Local Storage" for this website</li>
-                    <li>Delete the keys you want to remove</li>
-                </ol>
+                <div style="background: white; border-radius: var(--radius-lg); padding: 2rem; box-shadow: var(--shadow-sm); border: 1px solid var(--border-color);">
+                    <section style="margin-bottom: 2rem;">
+                        <h2 style="font-size: 1.5rem; font-weight: 600; margin-bottom: 1rem; color: var(--text-primary);">What Are Cookies?</h2>
+                        <p style="line-height: 1.6; margin-bottom: 1rem;">
+                            Cookies are small text files that are stored on your device when you visit a website. They help websites remember information about your visit, which can both make it easier to visit the site again and make the site more useful to you.
+                        </p>
+                        <p style="line-height: 1.6;">
+                            NexusRank Pro uses cookies and similar technologies (like local storage) to enhance your experience and provide better functionality.
+                        </p>
+                    </section>
 
-                <h4>Or Simply:</h4>
-                <ul>
-                    <li>Clear your browser's stored data for this site</li>
-                    <li>Use incognito/private browsing mode</li>
-                    <li>Use browser settings to manage site data</li>
-                </ul>
+                    <section style="margin-bottom: 2rem;">
+                        <h2 style="font-size: 1.5rem; font-weight: 600; margin-bottom: 1rem; color: var(--text-primary);">How We Use Cookies and Local Storage</h2>
+                        
+                        <h3 style="font-size: 1.25rem; font-weight: 600; margin-bottom: 0.75rem; color: var(--text-primary);">Essential Functionality</h3>
+                        <p style="line-height: 1.6; margin-bottom: 1rem;">We use local browser storage to:</p>
+                        <ul style="margin-left: 1.5rem; margin-bottom: 1.5rem;">
+                            <li style="margin-bottom: 0.5rem;">Track your daily usage limits for free tools</li>
+                            <li style="margin-bottom: 0.5rem;">Remember your Pro login status</li>
+                            <li style="margin-bottom: 0.5rem;">Save your preferences and settings</li>
+                            <li style="margin-bottom: 0.5rem;">Maintain application state across sessions</li>
+                        </ul>
 
-                <h3>🌍 Browser Compatibility</h3>
-                <p>Our tools work with localStorage disabled, but you'll lose:</p>
-                <ul>
-                    <li>Free usage tracking (unlimited free uses)</li>
-                    <li>Pro login persistence (need to login each session)</li>
-                    <li>User experience optimizations</li>
-                </ul>
+                        <h3 style="font-size: 1.25rem; font-weight: 600; margin-bottom: 0.75rem; color: var(--text-primary);">Performance and Analytics</h3>
+                        <p style="line-height: 1.6; margin-bottom: 1rem;">We may use cookies to:</p>
+                        <ul style="margin-left: 1.5rem; margin-bottom: 1.5rem;">
+                            <li style="margin-bottom: 0.5rem;">Analyze how our website is used</li>
+                            <li style="margin-bottom: 0.5rem;">Monitor website performance and functionality</li>
+                            <li style="margin-bottom: 0.5rem;">Identify and fix technical issues</li>
+                            <li style="margin-bottom: 0.5rem;">Understand user behavior to improve our services</li>
+                        </ul>
 
-                <h3>🔒 Security & Privacy</h3>
-                <ul>
-                    <li><strong>No Sensitive Data:</strong> We never store passwords or personal information</li>
-                    <li><strong>Local Processing:</strong> Usage counts are handled entirely in your browser</li>
-                    <li><strong>No Transmission:</strong> localStorage data is never sent to our servers</li>
-                    <li><strong>HTTPS Only:</strong> All connections are encrypted</li>
-                </ul>
+                        <h3 style="font-size: 1.25rem; font-weight: 600; margin-bottom: 0.75rem; color: var(--text-primary);">Service Worker</h3>
+                        <p style="line-height: 1.6; margin-bottom: 1rem;">
+                            We use a service worker to enable offline functionality and improve loading performance. This technology caches certain resources locally on your device.
+                        </p>
+                    </section>
 
-                <h3>⚖️ Legal Compliance</h3>
-                <p>Our minimal use of localStorage for essential functionality is compliant with:</p>
-                <ul>
-                    <li><strong>GDPR:</strong> No personal data processing</li>
-                    <li><strong>CCPA:</strong> No personal information sale or sharing</li>
-                    <li><strong>ePrivacy:</strong> Essential functionality exception</li>
-                </ul>
+                    <section style="margin-bottom: 2rem;">
+                        <h2 style="font-size: 1.5rem; font-weight: 600; margin-bottom: 1rem; color: var(--text-primary);">Types of Data Stored</h2>
+                        
+                        <div style="background: var(--surface-color); border-radius: var(--radius-md); padding: 1.5rem; margin-bottom: 1rem;">
+                            <h4 style="font-weight: 600; margin-bottom: 0.5rem; color: var(--text-primary);">Local Storage Data:</h4>
+                            <ul style="margin-left: 1.5rem;">
+                                <li style="margin-bottom: 0.5rem;"><code style="background: rgba(37, 99, 235, 0.1); padding: 0.25rem 0.5rem; border-radius: 3px;">nexusrank_usage</code> - Usage tracking for free tools</li>
+                                <li style="margin-bottom: 0.5rem;"><code style="background: rgba(37, 99, 235, 0.1); padding: 0.25rem 0.5rem; border-radius: 3px;">nexusrank_pro</code> - Pro subscription status</li>
+                            </ul>
+                        </div>
 
-                <h3>📧 Questions About Cookies?</h3>
-                <p>If you have questions about our storage practices, contact us at: <strong>shahshameer383@gmail.com</strong></p>
+                        <div style="background: var(--surface-color); border-radius: var(--radius-md); padding: 1.5rem;">
+                            <h4 style="font-weight: 600; margin-bottom: 0.5rem; color: var(--text-primary);">Session Data:</h4>
+                            <ul style="margin-left: 1.5rem;">
+                                <li style="margin-bottom: 0.5rem;">Current tool selections and inputs</li>
+                                <li style="margin-bottom: 0.5rem;">UI preferences and settings</li>
+                                <li style="margin-bottom: 0.5rem;">Temporary processing states</li>
+                            </ul>
+                        </div>
+                    </section>
 
-                <h3>📝 Policy Updates</h3>
-                <p>We'll update this policy if we change our storage practices. Check this page periodically for updates.</p>
+                    <section style="margin-bottom: 2rem;">
+                        <h2 style="font-size: 1.5rem; font-weight: 600; margin-bottom: 1rem; color: var(--text-primary);">Third-Party Cookies</h2>
+                        <p style="line-height: 1.6; margin-bottom: 1rem;">Our website may include content from third-party services that may set their own cookies:</p>
+                        
+                        <div style="border: 1px solid var(--border-color); border-radius: var(--radius-md); padding: 1rem; margin-bottom: 1rem;">
+                            <h4 style="font-weight: 600; margin-bottom: 0.5rem; color: var(--text-primary);">Cloudflare</h4>
+                            <p style="color: var(--text-secondary); font-size: 0.875rem; line-height: 1.6;">
+                                Provides security, performance, and analytics services. May set cookies for security and performance optimization.
+                            </p>
+                        </div>
 
-                <div class="cookie-summary" style="background: rgba(0, 255, 255, 0.1); border: 1px solid rgba(0, 255, 255, 0.3); border-radius: 10px; padding: 2rem; margin: 2rem 0;">
-                    <h3><i class="fas fa-check-circle"></i> Summary: Privacy-First Approach</h3>
-                    <p>We use minimal local storage for essential functionality only. No tracking, no ads, no data sharing. Your privacy is protected by design.</p>
+                        <div style="border: 1px solid var(--border-color); border-radius: var(--radius-md); padding: 1rem; margin-bottom: 1rem;">
+                            <h4 style="font-weight: 600; margin-bottom: 0.5rem; color: var(--text-primary);">Patreon</h4>
+                            <p style="color: var(--text-secondary); font-size: 0.875rem; line-height: 1.6;">
+                                Handles Pro subscriptions and may set cookies when you interact with subscription features.
+                            </p>
+                        </div>
+
+                        <div style="border: 1px solid var(--border-color); border-radius: var(--radius-md); padding: 1rem;">
+                            <h4 style="font-weight: 600; margin-bottom: 0.5rem; color: var(--text-primary);">Font and Asset CDNs</h4>
+                            <p style="color: var(--text-secondary); font-size: 0.875rem; line-height: 1.6;">
+                                Google Fonts and other CDNs may set cookies for performance optimization and analytics.
+                            </p>
+                        </div>
+                    </section>
+
+                    <section style="margin-bottom: 2rem;">
+                        <h2 style="font-size: 1.5rem; font-weight: 600; margin-bottom: 1rem; color: var(--text-primary);">Managing Cookies</h2>
+                        
+                        <h3 style="font-size: 1.25rem; font-weight: 600; margin-bottom: 0.75rem; color: var(--text-primary);">Browser Settings</h3>
+                        <p style="line-height: 1.6; margin-bottom: 1rem;">
+                            You can control and/or delete cookies through your browser settings. Most browsers allow you to:
+                        </p>
+                        <ul style="margin-left: 1.5rem; margin-bottom: 1.5rem;">
+                            <li style="margin-bottom: 0.5rem;">View which cookies are stored on your device</li>
+                            <li style="margin-bottom: 0.5rem;">Delete cookies individually or all at once</li>
+                            <li style="margin-bottom: 0.5rem;">Block cookies from specific websites</li>
+                            <li style="margin-bottom: 0.5rem;">Block all cookies entirely</li>
+                        </ul>
+
+                        <h3 style="font-size: 1.25rem; font-weight: 600; margin-bottom: 0.75rem; color: var(--text-primary);">Clear NexusRank Pro Data</h3>
+                        <p style="line-height: 1.6; margin-bottom: 1rem;">
+                            To clear all data stored by NexusRank Pro:
+                        </p>
+                        <ol style="margin-left: 1.5rem; margin-bottom: 1.5rem;">
+                            <li style="margin-bottom: 0.5rem;">Open your browser's developer tools (F12)</li>
+                            <li style="margin-bottom: 0.5rem;">Navigate to the "Application" or "Storage" tab</li>
+                            <li style="margin-bottom: 0.5rem;">Find "Local Storage" and select our domain</li>
+                            <li style="margin-bottom: 0.5rem;">Delete the nexusrank_usage and nexusrank_pro entries</li>
+                        </ol>
+
+                        <div style="background: rgba(245, 158, 11, 0.1); border: 1px solid rgba(245, 158, 11, 0.3); border-radius: var(--radius-md); padding: 1rem;">
+                            <p style="color: var(--warning-color); font-weight: 500; margin-bottom: 0.5rem;">
+                                <i class="fas fa-exclamation-triangle"></i> Important Note
+                            </p>
+                            <p style="color: var(--text-secondary); font-size: 0.875rem; line-height: 1.6;">
+                                Blocking or deleting cookies may affect the functionality of our website. Some features may not work properly without local storage.
+                            </p>
+                        </div>
+                    </section>
+
+                    <section style="margin-bottom: 2rem;">
+                        <h2 style="font-size: 1.5rem; font-weight: 600; margin-bottom: 1rem; color: var(--text-primary);">Cookie Retention</h2>
+                        <p style="line-height: 1.6; margin-bottom: 1rem;">
+                            Different types of data have different retention periods:
+                        </p>
+                        <ul style="margin-left: 1.5rem; margin-bottom: 1rem;">
+                            <li style="margin-bottom: 0.5rem;"><strong>Usage Data:</strong> Resets every 24 hours automatically</li>
+                            <li style="margin-bottom: 0.5rem;"><strong>Pro Status:</strong> Persists until manually cleared or logout</li>
+                            <li style="margin-bottom: 0.5rem;"><strong>Session Data:</strong> Cleared when browser session ends</li>
+                            <li style="margin-bottom: 0.5rem;"><strong>Cache Data:</strong> Managed by service worker, periodically updated</li>
+                        </ul>
+                    </section>
+
+                    <section style="margin-bottom: 2rem;">
+                        <h2 style="font-size: 1.5rem; font-weight: 600; margin-bottom: 1rem; color: var(--text-primary);">Data Security</h2>
+                        <p style="line-height: 1.6; margin-bottom: 1rem;">
+                            We implement appropriate security measures to protect data stored locally:
+                        </p>
+                        <ul style="margin-left: 1.5rem; margin-bottom: 1rem;">
+                            <li style="margin-bottom: 0.5rem;">Data is stored only in your browser's secure storage</li>
+                            <li style="margin-bottom: 0.5rem;">No sensitive information like passwords is stored locally</li>
+                            <li style="margin-bottom: 0.5rem;">All data transmission uses HTTPS encryption</li>
+                            <li style="margin-bottom: 0.5rem;">Regular security audits of our storage practices</li>
+                        </ul>
+                    </section>
+
+                    <section style="margin-bottom: 2rem;">
+                        <h2 style="font-size: 1.5rem; font-weight: 600; margin-bottom: 1rem; color: var(--text-primary);">Changes to This Policy</h2>
+                        <p style="line-height: 1.6;">
+                            We may update this cookie policy from time to time to reflect changes in our practices or for other operational, legal, or regulatory reasons. When we update this policy, we will revise the "Last updated" date at the top of this page.
+                        </p>
+                    </section>
+
+                    <section>
+                        <h2 style="font-size: 1.5rem; font-weight: 600; margin-bottom: 1rem; color: var(--text-primary);">Contact Us</h2>
+                        <p style="line-height: 1.6;">
+                            If you have any questions about this cookie policy or our data practices, please contact us:
+                        </p>
+                        <ul style="margin-left: 1.5rem; margin-top: 1rem;">
+                            <li style="margin-bottom: 0.5rem;">Email: privacy@nexusrankpro.com</li>
+                            <li style="margin-bottom: 0.5rem;">Contact Form: <a href="contact.html" style="color: var(--primary-color);">Get in Touch</a></li>
+                        </ul>
+                    </section>
                 </div>
             </div>
-        </main>
+        </div>
+    </main>
 
-        <footer class="footer">
-            <div class="footer-links">
-                <a href="privacy.html">Privacy Policy</a> |
-                <a href="terms.html">Terms</a> |
-                <a href="about.html">About</a> |
-                <a href="contact.html">Contact</a> |
-                <a href="cookie-policy.html">Cookie Policy</a>
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-column">
+                    <div class="footer-brand">
+                        <i class="fas fa-rocket"></i>
+                        <span>NexusRank Pro</span>
+                    </div>
+                    <p>Professional AI-powered SEO toolkit for content creators, marketers, and businesses.</p>
+                    <div class="social-links">
+                        <a href="#" aria-label="Twitter"><i class="fab fa-twitter"></i></a>
+                        <a href="#" aria-label="LinkedIn"><i class="fab fa-linkedin"></i></a>
+                        <a href="#" aria-label="GitHub"><i class="fab fa-github"></i></a>
+                    </div>
+                </div>
+                
+                <div class="footer-column">
+                    <h4>Quick Links</h4>
+                    <ul>
+                        <li><a href="../index.html">Home</a></li>
+                        <li><a href="../index.html#tools">Tools</a></li>
+                        <li><a href="about.html">About</a></li>
+                        <li><a href="contact.html">Contact</a></li>
+                    </ul>
+                </div>
+                
+                <div class="footer-column">
+                    <h4>Popular Tools</h4>
+                    <ul>
+                        <li><a href="../index.html#tools">AI SEO Writer</a></li>
+                        <li><a href="../index.html#tools">AI Humanizer</a></li>
+                        <li><a href="../index.html#tools">AI Detector</a></li>
+                        <li><a href="../index.html#tools">Paraphrasing Tool</a></li>
+                    </ul>
+                </div>
+                
+                <div class="footer-column">
+                    <h4>Legal</h4>
+                    <ul>
+                        <li><a href="privacy.html">Privacy Policy</a></li>
+                        <li><a href="terms.html">Terms of Service</a></li>
+                        <li><a href="cookie-policy.html">Cookie Policy</a></li>
+                    </ul>
+                </div>
             </div>
-            <p>&copy; 2025 NexusRank Pro. Built for creators, by creators.</p>
-        </footer>
-    </div>
+            
+            <div class="footer-bottom">
+                <p>&copy; 2025 NexusRank Pro. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Scripts -->
+    <script>
+        // Mobile hamburger menu
+        const hamburger = document.getElementById('hamburger');
+        const navMenu = document.getElementById('nav-menu');
+        
+        if (hamburger && navMenu) {
+            hamburger.addEventListener('click', () => {
+                hamburger.classList.toggle('active');
+                navMenu.classList.toggle('active');
+            });
+        }
+
+        // Close mobile menu when clicking nav links
+        document.querySelectorAll('.nav-link').forEach(link => {
+            link.addEventListener('click', () => {
+                hamburger?.classList.remove('active');
+                navMenu?.classList.remove('active');
+            });
+        });
+    </script>
 </body>
 </html>

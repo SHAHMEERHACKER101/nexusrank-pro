@@ -4,111 +4,308 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Contact Us - NexusRank Pro</title>
-    <meta name="description" content="Get in touch with NexusRank Pro. We're here to help with any questions about our AI-powered SEO & writing tools.">
+    <meta name="description" content="Get in touch with the NexusRank Pro team. We're here to help with your AI SEO toolkit needs.">
+    
+    <!-- Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;700&family=Segoe+UI:wght@400;600;700&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="../css/style.css">
+    <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+    
+    <!-- Font Awesome 6 -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="../css/style.css">
 </head>
 <body>
-    <div class="container">
-        <header class="header">
-            <div class="logo">
-                <a href="../index.html">
-                    <i class="fas fa-chart-line"></i>
-                    <span>NexusRank Pro</span>
-                </a>
+    <!-- Sticky Navigation -->
+    <nav class="navbar" id="navbar">
+        <div class="nav-container">
+            <div class="nav-brand">
+                <i class="fas fa-rocket"></i>
+                <span>NexusRank Pro</span>
             </div>
-            <nav class="nav">
-                <a href="../index.html" class="nav-link">
-                    <i class="fas fa-home"></i> Home
-                </a>
-            </nav>
-        </header>
-
-        <main class="main-content">
-            <div class="page-header">
-                <h1><i class="fas fa-envelope"></i> Contact Us</h1>
-                <p>Have questions or feedback? We'd love to hear from you!</p>
+            
+            <div class="nav-menu" id="nav-menu">
+                <a href="../index.html" class="nav-link">Home</a>
+                <a href="../index.html#tools" class="nav-link">Tools</a>
+                <a href="about.html" class="nav-link">About</a>
+                <a href="contact.html" class="nav-link active">Contact</a>
+                <a href="privacy.html" class="nav-link">Privacy</a>
+                <a href="terms.html" class="nav-link">Terms</a>
             </div>
+            
+            <div class="nav-actions">
+                <button class="btn-cta" onclick="window.open('https://patreon.com/nexusrankpro', '_blank')">
+                    🚀 Get Unlimited Access
+                </button>
+                <div class="hamburger" id="hamburger">
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                </div>
+            </div>
+        </div>
+    </nav>
 
-            <div class="content-section">
-                <h2>📬 Get in Touch</h2>
-                <p>Whether you have a question about our tools, need technical support, or want to share feedback, we're here to help.</p>
-
-                <div class="contact-info" style="background: rgba(0, 255, 255, 0.1); border: 1px solid rgba(0, 255, 255, 0.3); border-radius: 10px; padding: 2rem; margin: 2rem 0;">
-                    <h3><i class="fas fa-paper-plane"></i> Email Us</h3>
-                    <p style="font-size: 1.2rem; margin: 1rem 0;">
-                        <strong>shahshameer383@gmail.com</strong>
+    <!-- Main Content -->
+    <main style="margin-top: 64px; padding: 3rem 0;">
+        <div class="container">
+            <div style="max-width: 1000px; margin: 0 auto;">
+                <div style="text-align: center; margin-bottom: 3rem;">
+                    <h1 style="font-size: 2.5rem; font-weight: 700; margin-bottom: 1rem; color: var(--text-primary);">Get in Touch</h1>
+                    <p style="color: var(--text-secondary); margin-bottom: 2rem; font-size: 1.125rem;">
+                        We're here to help you succeed with your AI SEO toolkit. Reach out with any questions or feedback.
                     </p>
-                    <p>We aim to respond to all inquiries within <strong>48 hours</strong>.</p>
                 </div>
-
-                <h2>🤔 Common Questions</h2>
-                <div class="faq-section">
-                    <div class="faq-item" style="background: rgba(185, 103, 255, 0.1); border: 1px solid rgba(185, 103, 255, 0.3); border-radius: 10px; padding: 1.5rem; margin: 1rem 0;">
-                        <h4><i class="fas fa-question-circle"></i> How do I get Pro access?</h4>
-                        <p>Currently, Pro access is available with specific credentials. Contact us for more information about Pro features and access.</p>
+                
+                <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 3rem;">
+                    <!-- Contact Form -->
+                    <div style="background: white; border-radius: var(--radius-lg); padding: 2rem; box-shadow: var(--shadow-sm); border: 1px solid var(--border-color);">
+                        <h2 style="font-size: 1.5rem; font-weight: 600; margin-bottom: 1.5rem; color: var(--text-primary);">Send us a Message</h2>
+                        
+                        <form id="contact-form" style="display: flex; flex-direction: column; gap: 1rem;">
+                            <div class="form-group">
+                                <label for="contact-name">Full Name *</label>
+                                <input type="text" id="contact-name" name="name" required style="width: 100%; border: 1px solid var(--border-color); border-radius: var(--radius-md); padding: 0.75rem; font-family: inherit; font-size: 0.875rem; transition: border-color 0.2s ease;">
+                            </div>
+                            
+                            <div class="form-group">
+                                <label for="contact-email">Email Address *</label>
+                                <input type="email" id="contact-email" name="email" required style="width: 100%; border: 1px solid var(--border-color); border-radius: var(--radius-md); padding: 0.75rem; font-family: inherit; font-size: 0.875rem; transition: border-color 0.2s ease;">
+                            </div>
+                            
+                            <div class="form-group">
+                                <label for="contact-subject">Subject *</label>
+                                <select id="contact-subject" name="subject" required style="width: 100%; border: 1px solid var(--border-color); border-radius: var(--radius-md); padding: 0.75rem; font-family: inherit; font-size: 0.875rem; transition: border-color 0.2s ease;">
+                                    <option value="">Select a subject</option>
+                                    <option value="general">General Inquiry</option>
+                                    <option value="support">Technical Support</option>
+                                    <option value="billing">Billing & Subscription</option>
+                                    <option value="feature">Feature Request</option>
+                                    <option value="bug">Bug Report</option>
+                                    <option value="partnership">Partnership</option>
+                                </select>
+                            </div>
+                            
+                            <div class="form-group">
+                                <label for="contact-message">Message *</label>
+                                <textarea id="contact-message" name="message" rows="6" required placeholder="Please describe your inquiry in detail..." style="width: 100%; border: 1px solid var(--border-color); border-radius: var(--radius-md); padding: 0.75rem; font-family: inherit; font-size: 0.875rem; resize: vertical; transition: border-color 0.2s ease;"></textarea>
+                            </div>
+                            
+                            <button type="submit" class="btn-primary" style="margin-top: 1rem;">
+                                <i class="fas fa-paper-plane"></i> Send Message
+                            </button>
+                        </form>
+                        
+                        <div id="form-response" style="margin-top: 1rem; display: none;"></div>
                     </div>
-
-                    <div class="faq-item" style="background: rgba(0, 255, 255, 0.1); border: 1px solid rgba(0, 255, 255, 0.3); border-radius: 10px; padding: 1.5rem; margin: 1rem 0;">
-                        <h4><i class="fas fa-question-circle"></i> Is my content stored on your servers?</h4>
-                        <p>No, we don't store your content. All text processing is temporary and your data remains private.</p>
-                    </div>
-
-                    <div class="faq-item" style="background: rgba(185, 103, 255, 0.1); border: 1px solid rgba(185, 103, 255, 0.3); border-radius: 10px; padding: 1.5rem; margin: 1rem 0;">
-                        <h4><i class="fas fa-question-circle"></i> Can I use this for commercial projects?</h4>
-                        <p>Yes! All our tools can be used for both personal and commercial purposes. Check our Terms of Service for full details.</p>
-                    </div>
-
-                    <div class="faq-item" style="background: rgba(0, 255, 255, 0.1); border: 1px solid rgba(0, 255, 255, 0.3); border-radius: 10px; padding: 1.5rem; margin: 1rem 0;">
-                        <h4><i class="fas fa-question-circle"></i> What makes NexusRank Pro different?</h4>
-                        <p>We focus on speed, privacy, and professional-grade results. Our 12 integrated tools provide everything you need in one platform, with a cyberpunk-inspired design that makes work enjoyable.</p>
+                    
+                    <!-- Contact Information -->
+                    <div>
+                        <div style="background: white; border-radius: var(--radius-lg); padding: 2rem; box-shadow: var(--shadow-sm); border: 1px solid var(--border-color); margin-bottom: 2rem;">
+                            <h3 style="font-size: 1.25rem; font-weight: 600; margin-bottom: 1.5rem; color: var(--text-primary);">Contact Information</h3>
+                            
+                            <div style="display: flex; flex-direction: column; gap: 1.5rem;">
+                                <div style="display: flex; align-items: center; gap: 1rem;">
+                                    <div style="width: 40px; height: 40px; background: rgba(37, 99, 235, 0.1); border-radius: var(--radius-md); display: flex; align-items: center; justify-content: center;">
+                                        <i class="fas fa-envelope" style="color: var(--primary-color);"></i>
+                                    </div>
+                                    <div>
+                                        <h4 style="font-weight: 600; margin-bottom: 0.25rem; color: var(--text-primary);">Email</h4>
+                                        <p style="color: var(--text-secondary); font-size: 0.875rem;">support@nexusrankpro.com</p>
+                                    </div>
+                                </div>
+                                
+                                <div style="display: flex; align-items: center; gap: 1rem;">
+                                    <div style="width: 40px; height: 40px; background: rgba(16, 185, 129, 0.1); border-radius: var(--radius-md); display: flex; align-items: center; justify-content: center;">
+                                        <i class="fas fa-clock" style="color: var(--success-color);"></i>
+                                    </div>
+                                    <div>
+                                        <h4 style="font-weight: 600; margin-bottom: 0.25rem; color: var(--text-primary);">Response Time</h4>
+                                        <p style="color: var(--text-secondary); font-size: 0.875rem;">Within 24 hours</p>
+                                    </div>
+                                </div>
+                                
+                                <div style="display: flex; align-items: center; gap: 1rem;">
+                                    <div style="width: 40px; height: 40px; background: rgba(245, 158, 11, 0.1); border-radius: var(--radius-md); display: flex; align-items: center; justify-content: center;">
+                                        <i class="fas fa-headset" style="color: var(--accent-color);"></i>
+                                    </div>
+                                    <div>
+                                        <h4 style="font-weight: 600; margin-bottom: 0.25rem; color: var(--text-primary);">Support Hours</h4>
+                                        <p style="color: var(--text-secondary); font-size: 0.875rem;">Monday - Friday, 9AM - 6PM EST</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- FAQ Section -->
+                        <div style="background: white; border-radius: var(--radius-lg); padding: 2rem; box-shadow: var(--shadow-sm); border: 1px solid var(--border-color);">
+                            <h3 style="font-size: 1.25rem; font-weight: 600; margin-bottom: 1.5rem; color: var(--text-primary);">Quick Answers</h3>
+                            
+                            <div style="display: flex; flex-direction: column; gap: 1rem;">
+                                <details style="border: 1px solid var(--border-color); border-radius: var(--radius-sm); padding: 1rem;">
+                                    <summary style="cursor: pointer; font-weight: 500; color: var(--text-primary);">How do I upgrade to Pro?</summary>
+                                    <p style="margin-top: 0.5rem; color: var(--text-secondary); font-size: 0.875rem;">Click the "🚀 Get Unlimited Access" button to subscribe via Patreon. Pro users get unlimited access to all tools.</p>
+                                </details>
+                                
+                                <details style="border: 1px solid var(--border-color); border-radius: var(--radius-sm); padding: 1rem;">
+                                    <summary style="cursor: pointer; font-weight: 500; color: var(--text-primary);">Is my content safe and private?</summary>
+                                    <p style="margin-top: 0.5rem; color: var(--text-secondary); font-size: 0.875rem;">Yes, your content is processed securely and not stored permanently. We prioritize your privacy and data security.</p>
+                                </details>
+                                
+                                <details style="border: 1px solid var(--border-color); border-radius: var(--radius-sm); padding: 1rem;">
+                                    <summary style="cursor: pointer; font-weight: 500; color: var(--text-primary);">What AI model do you use?</summary>
+                                    <p style="margin-top: 0.5rem; color: var(--text-secondary); font-size: 0.875rem;">We use DeepSeek AI, one of the most advanced language models available, to ensure high-quality results.</p>
+                                </details>
+                                
+                                <details style="border: 1px solid var(--border-color); border-radius: var(--radius-sm); padding: 1rem;">
+                                    <summary style="cursor: pointer; font-weight: 500; color: var(--text-primary);">Can I use the tools for commercial projects?</summary>
+                                    <p style="margin-top: 0.5rem; color: var(--text-secondary); font-size: 0.875rem;">Yes, all content generated is yours to use for any purpose, including commercial projects and client work.</p>
+                                </details>
+                            </div>
+                        </div>
                     </div>
                 </div>
-
-                <h2>💡 Feature Requests & Feedback</h2>
-                <p>We love hearing from our users! If you have ideas for new features or improvements, please reach out. Your feedback directly influences our development roadmap.</p>
-
-                <h2>🐛 Bug Reports</h2>
-                <p>Found an issue? Help us improve by reporting bugs. Please include:</p>
-                <ul>
-                    <li>Which tool you were using</li>
-                    <li>What you expected to happen</li>
-                    <li>What actually happened</li>
-                    <li>Your browser and device information</li>
-                </ul>
-
-                <h2>🤝 Partnerships & Collaborations</h2>
-                <p>Interested in partnering with us or integrating our tools? We're always open to collaboration opportunities that benefit the content creation community.</p>
-
-                <div class="contact-cta" style="background: linear-gradient(135deg, var(--neon-cyan), var(--electric-purple)); border-radius: 10px; padding: 2rem; margin: 2rem 0; text-align: center; color: #000;">
-                    <h3>Ready to Connect?</h3>
-                    <p style="margin: 1rem 0; color: #000;">Drop us a line and let's start a conversation!</p>
-                    <a href="mailto:shahshameer383@gmail.com" style="display: inline-block; background: #000; color: var(--neon-cyan); padding: 1rem 2rem; border-radius: 10px; text-decoration: none; font-weight: 600;">Send Email</a>
-                </div>
-
-                <h2>⏰ Response Times</h2>
-                <ul>
-                    <li><strong>General Inquiries:</strong> Within 48 hours</li>
-                    <li><strong>Technical Support:</strong> Within 24 hours</li>
-                    <li><strong>Bug Reports:</strong> Within 12 hours</li>
-                    <li><strong>Partnership Inquiries:</strong> Within 72 hours</li>
-                </ul>
             </div>
-        </main>
+        </div>
+    </main>
 
-        <footer class="footer">
-            <div class="footer-links">
-                <a href="privacy.html">Privacy Policy</a> |
-                <a href="terms.html">Terms</a> |
-                <a href="about.html">About</a> |
-                <a href="contact.html">Contact</a> |
-                <a href="cookie-policy.html">Cookie Policy</a>
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-column">
+                    <div class="footer-brand">
+                        <i class="fas fa-rocket"></i>
+                        <span>NexusRank Pro</span>
+                    </div>
+                    <p>Professional AI-powered SEO toolkit for content creators, marketers, and businesses.</p>
+                    <div class="social-links">
+                        <a href="#" aria-label="Twitter"><i class="fab fa-twitter"></i></a>
+                        <a href="#" aria-label="LinkedIn"><i class="fab fa-linkedin"></i></a>
+                        <a href="#" aria-label="GitHub"><i class="fab fa-github"></i></a>
+                    </div>
+                </div>
+                
+                <div class="footer-column">
+                    <h4>Quick Links</h4>
+                    <ul>
+                        <li><a href="../index.html">Home</a></li>
+                        <li><a href="../index.html#tools">Tools</a></li>
+                        <li><a href="about.html">About</a></li>
+                        <li><a href="contact.html">Contact</a></li>
+                    </ul>
+                </div>
+                
+                <div class="footer-column">
+                    <h4>Popular Tools</h4>
+                    <ul>
+                        <li><a href="../index.html#tools">AI SEO Writer</a></li>
+                        <li><a href="../index.html#tools">AI Humanizer</a></li>
+                        <li><a href="../index.html#tools">AI Detector</a></li>
+                        <li><a href="../index.html#tools">Paraphrasing Tool</a></li>
+                    </ul>
+                </div>
+                
+                <div class="footer-column">
+                    <h4>Legal</h4>
+                    <ul>
+                        <li><a href="privacy.html">Privacy Policy</a></li>
+                        <li><a href="terms.html">Terms of Service</a></li>
+                        <li><a href="cookie-policy.html">Cookie Policy</a></li>
+                    </ul>
+                </div>
             </div>
-            <p>&copy; 2025 NexusRank Pro. Built for creators, by creators.</p>
-        </footer>
-    </div>
+            
+            <div class="footer-bottom">
+                <p>&copy; 2025 NexusRank Pro. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Scripts -->
+    <script>
+        // Mobile hamburger menu
+        const hamburger = document.getElementById('hamburger');
+        const navMenu = document.getElementById('nav-menu');
+        
+        if (hamburger && navMenu) {
+            hamburger.addEventListener('click', () => {
+                hamburger.classList.toggle('active');
+                navMenu.classList.toggle('active');
+            });
+        }
+
+        // Close mobile menu when clicking nav links
+        document.querySelectorAll('.nav-link').forEach(link => {
+            link.addEventListener('click', () => {
+                hamburger?.classList.remove('active');
+                navMenu?.classList.remove('active');
+            });
+        });
+
+        // Contact form handling
+        const contactForm = document.getElementById('contact-form');
+        const formResponse = document.getElementById('form-response');
+
+        contactForm.addEventListener('submit', async (e) => {
+            e.preventDefault();
+            
+            const formData = new FormData(contactForm);
+            const data = Object.fromEntries(formData);
+            
+            // Show loading state
+            const submitBtn = contactForm.querySelector('button[type="submit"]');
+            const originalText = submitBtn.innerHTML;
+            submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Sending...';
+            submitBtn.disabled = true;
+            
+            try {
+                // Simulate form submission (replace with actual endpoint if needed)
+                await new Promise(resolve => setTimeout(resolve, 1000));
+                
+                // Show success message
+                formResponse.innerHTML = `
+                    <div class="success">
+                        <i class="fas fa-check-circle"></i> 
+                        Thank you for your message! We'll get back to you within 24 hours.
+                    </div>
+                `;
+                formResponse.style.display = 'block';
+                
+                // Reset form
+                contactForm.reset();
+                
+            } catch (error) {
+                // Show error message
+                formResponse.innerHTML = `
+                    <div class="error">
+                        <i class="fas fa-exclamation-triangle"></i> 
+                        There was an error sending your message. Please try again or email us directly.
+                    </div>
+                `;
+                formResponse.style.display = 'block';
+            } finally {
+                // Reset button
+                submitBtn.innerHTML = originalText;
+                submitBtn.disabled = false;
+            }
+        });
+
+        // Form validation styling
+        const inputs = contactForm.querySelectorAll('input, select, textarea');
+        inputs.forEach(input => {
+            input.addEventListener('focus', () => {
+                input.style.borderColor = 'var(--primary-color)';
+                input.style.boxShadow = '0 0 0 3px rgba(37, 99, 235, 0.1)';
+            });
+            
+            input.addEventListener('blur', () => {
+                input.style.borderColor = 'var(--border-color)';
+                input.style.boxShadow = 'none';
+            });
+        });
+    </script>
 </body>
 </html>
